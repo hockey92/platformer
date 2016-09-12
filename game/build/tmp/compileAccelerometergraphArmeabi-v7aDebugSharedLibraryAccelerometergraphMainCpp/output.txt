@@ -1,0 +1,4 @@
+See file:///home/qwerty/androidProjects/platformer/game/build/tmp/compileAccelerometergraphArmeabi-v7aDebugSharedLibraryAccelerometergraphMainCpp/output.txt for all output for compileAccelerometergraphArmeabi-v7aDebugSharedLibraryAccelerometergraphMainCpp.
+compiling BasePhysicsService.cpp successful.
+
+Finished compileAccelerometergraphArmeabi-v7aDebugSharedLibraryAccelerometergraphMainCpp, see full log file:///home/qwerty/androidProjects/platformer/game/build/tmp/compileAccelerometergraphArmeabi-v7aDebugSharedLibraryAccelerometergraphMainCpp/output.txt.
