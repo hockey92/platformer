@@ -45,6 +45,13 @@ class GameEngine {
     PolygonShape *polygon1;
     PolygonShape *polygon2;
 
+    PolygonShape *c1;
+    PolygonShape *c2;
+
+    float penDepth;
+    std::vector<std::pair<float, int> > pointNumbers;
+    int lineNumber;
+
 public:
     GameEngine() { }
 
@@ -65,6 +72,34 @@ public:
         shader = Shaders::getTextureShader();
 
         texture = new Texture(new TGAImage(circle));
+
+        Vec2 vertices1[] = {Vec2(0.9f, 0.1f),
+                            Vec2(-0.9f, 0.1f),
+                            Vec2(-0.9f, -0.1f),
+                            Vec2(0.9f, -0.1f)};
+        polygon1 = new PolygonShape(vertices1, 4);
+        polygon1->move(Vec2(0, -1));
+
+        Vec2 vertices2[] = {Vec2(0.0f, -0.2f),
+                            Vec2(0.2f, 0.2f),
+                            Vec2(-0.2f, 0.2f)};
+        polygon2 = new PolygonShape(vertices2, 3);
+        polygon2->move(Vec2(0, -0.7f));
+        polygon2->rotate(0.2f);
+
+//        Collision *collision = CollisionFactory::createCollision(polygon1, polygon2);
+
+        Vec2 vertices3[] = {Vec2(0.02f, 0.02f),
+                            Vec2(-0.02f, 0.02f),
+                            Vec2(-0.02f, -0.02f),
+                            Vec2(0.02f, -0.02f)};
+        c1 = new PolygonShape(vertices3, 4);
+//        c1->move(polygon2->getCenter() + collision->getR2());
+
+        c2 = new PolygonShape(vertices3, 4);
+//        c2->move(polygon1->getCenter() + collision->getR1());
+
+
 
 //        Vec2 vertices1[] = {Vec2(0.5f, 0.5f),
 //                            Vec2(-0.5f, 0.5f),
@@ -105,8 +140,19 @@ public:
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-        glLineWidth(3.0f);
+        glLineWidth(1.0f);
         glClearColor(1.f, 1.f, 1.f, 1.0f);
+
+        polygon2->rotate(-0.01f);
+//
+        Collision *collision = CollisionFactory::createCollision(polygon1, polygon2);
+
+        if (collision != NULL) {
+            c1->setCenter(polygon2->getCenter() + collision->getR2());
+            c2->setCenter(polygon1->getCenter() + collision->getR1());
+            c1->draw(mvp);
+            c2->draw(mvp);
+        }
 
 //        float *result = DrawUtils::createCoordsForTextureShader(-0.03f, 0.03f, -0.03f, 0.03f, 0.f,
 //                                                                1.f, 0.f, 1.f);
@@ -133,8 +179,8 @@ public:
 //            shader->render();
 //        }
 
-//        polygon1->draw(mvp);
-//        polygon2->draw(mvp);
+        polygon1->draw(mvp);
+        polygon2->draw(mvp);
 
 
         for (int i = 0; i < basePhysicsService->physicsObjects.size(); i++) {

@@ -55,7 +55,7 @@ void PolygonShape::draw(float *mvp) const {
 
 void PolygonShape::calculateLines() {
     for (int i = 0; i < verticesSize; i++) {
-        lines[i].calculate(getVertex(indices[i * 2]), getVertex(indices[i * 2 + 1]));
+        lines[i].calculate(getVertex(indices[i * 2 + 1]), getVertex(indices[i * 2]));
     }
 }
 
@@ -70,7 +70,7 @@ Line *PolygonShape::getLines() const {
 void PolygonShape::innerRotate(float angle) {
     BaseShape::innerRotate(angle);
     for (int i = 0; i < verticesSize; i++) {
-        vertices[i] = initVertices[i].rotate(angle);
+        vertices[i] = initVertices[i].rotate(getAngel());
     }
     calculateLines();
 }

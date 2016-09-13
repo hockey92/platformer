@@ -1,4 +1,0 @@
-See file:///home/qwerty/androidProjects/platformer/game/build/tmp/linkAccelerometergraphX86DebugSharedLibrary/output.txt for all output for linkAccelerometergraphX86DebugSharedLibrary.
-linking libaccelerometergraph.so successful.
-
-Finished linkAccelerometergraphX86DebugSharedLibrary, see full log file:///home/qwerty/androidProjects/platformer/game/build/tmp/linkAccelerometergraphX86DebugSharedLibrary/output.txt.

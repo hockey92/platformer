@@ -79,16 +79,29 @@ Collision *CollisionFactory::createCollision(CircleShape *c, SegmentShape *s) {
 
 Collision *CollisionFactory::createCollision(PolygonShape *polygon1, PolygonShape *polygon2) {
     float penDepth;
-    std::vector<std::pair<float, int> > pointNumbers;
+    std::vector<std::pair<float, int> > pointNumbers(10);
     int lineNumber;
-    CollisionFactory::temp(polygon1, polygon2, penDepth, lineNumber, pointNumbers);
+    CollisionFactory::createCollision(polygon1, polygon2, penDepth, lineNumber, pointNumbers);
+
+    if (penDepth >= 0.0f) {
+        Vec2 n = polygon1->getLines()[lineNumber].getNormal();
+        Vec2 r1 = polygon2->getVertex(pointNumbers.back().second) + n * pointNumbers.back().first -
+                  polygon1->getCenter();
+        Vec2 r2 = polygon2->getVertices()[pointNumbers.back().second];
+        return new Collision(n, r1, r2, pointNumbers.back().first);
+    }
+
     return NULL;
 }
 
-bool CollisionFactory::temp(PolygonShape *polygon1, PolygonShape *polygon2,
-                            float &penDepth, int &lineNumber,
-                            std::vector<std::pair<float, int> > &pointNumbers) {
+bool CollisionFactory::createCollision(PolygonShape *polygon1, PolygonShape *polygon2,
+                                       float &penDepth, int &lineNumber,
+                                       std::vector<std::pair<float, int> > &pointNumbers) {
     penDepth = -1;
+    char penetratedPoints[polygon2->getVerticesSize()];
+    for (int i = 0; i < polygon2->getVerticesSize(); i++) {
+        penetratedPoints[i] = 1;
+    }
     for (int i = 0; i < polygon1->getVerticesSize(); i++) {
         Vec2 point = polygon1->getVertex(i);
         Line line = polygon1->getLines()[i];
@@ -100,12 +113,14 @@ bool CollisionFactory::temp(PolygonShape *polygon1, PolygonShape *polygon2,
             Vec2 currentPoint = polygon2->getVertex(j);
             Line currentLine = Line(currentPoint, currentPoint + perpLine.getNormal());
             Vec2 mutualPoint = Line::getMutualPoint(perpLine, currentLine);
-            float penDepthForCurrPoint = line.getDistToPoint(mutualPoint);
+            float penDepthForCurrPoint = -line.getDistToPoint(mutualPoint);
             if (penDepthForCurrPoint >= 0) {
                 penDepthForCurrLine = penDepthForCurrPoint > penDepthForCurrLine
                                       ? penDepthForCurrPoint
                                       : penDepthForCurrLine;
                 pointNumbersForCurrLine.push_back(std::pair<float, int>(penDepthForCurrPoint, j));
+            } else {
+                penetratedPoints[j] = 0;
             }
         }
 

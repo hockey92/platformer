@@ -15,15 +15,15 @@ public:
 
     static Collision *createCollision(BaseShape *shape1, BaseShape *shape2);
 
-    static bool temp(PolygonShape *polygon1, PolygonShape *polygon2, float &penDepth,
-                     int &lineNumber, std::vector<std::pair<float, int> > &pointNumbers);
+    static bool createCollision(PolygonShape *polygon1, PolygonShape *polygon2, float &penDepth,
+                                int &lineNumber, std::vector<std::pair<float, int> > &pointNumbers);
+
+    static Collision *createCollision(PolygonShape *polygon1, PolygonShape *polygon2);
 
 private:
     static Collision *createCollision(CircleShape *circle1, CircleShape *circle2);
 
     static Collision *createCollision(CircleShape *circle, SegmentShape *segment);
-
-    static Collision *createCollision(PolygonShape *polygon1, PolygonShape *polygon2);
 };
 
 #endif //NATIVE_ACTIVITY_COLLISIONFACTORY_H
