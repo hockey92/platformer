@@ -32,15 +32,29 @@ BasePhysicsService::BasePhysicsService() : status(STOPPED) {
                         Vec2(1.9f, -0.1f)};
     physicsObjects.push_back(new PhysicsObject(new PolygonShape(vertices1, 4), 0));
     physicsObjects.back()->getShape()->move(Vec2(0, -1));
+//    physicsObjects.back()->getShape()->rotate(0.1f);
+
+    Vec2 vertices2[] = {Vec2(0.2f, 0.2f),
+                        Vec2(-0.2f, 0.2f),
+                        Vec2(-0.2f, -0.2f),
+                        Vec2(0.2f, -0.2f)};
+
+    physicsObjects.push_back(new PhysicsObject(new PolygonShape(vertices2, 4), 1.f));
+    physicsObjects.back()->getShape()->move(Vec2(0.05f, 0));
+    physicsObjects.back()->getShape()->rotate(0.0f);
+//    physicsObjects.back()->setAngleVel(1.0f);
+
+    physicsObjects.push_back(new PhysicsObject(new PolygonShape(vertices2, 4), 1.f));
+    physicsObjects.back()->getShape()->move(Vec2(0, -0.5f));
     physicsObjects.back()->getShape()->rotate(0.1f);
 
-    Vec2 vertices2[] = {Vec2(0.0f, -0.2f),
-                        Vec2(0.2f, 0.2f),
-                        Vec2(-0.2f, 0.2f)};
-    physicsObjects.push_back(new PhysicsObject(new PolygonShape(vertices2, 3), 10.f));
-    physicsObjects.back()->getShape()->move(Vec2(0, 1));
-//    physicsObjects.back()->getShape()->rotate(0.2f);
-//    physicsObjects.back()->setAngleVel(1.0f);
+    physicsObjects.push_back(new PhysicsObject(new PolygonShape(vertices2, 4), 1.f));
+    physicsObjects.back()->getShape()->move(Vec2(0, 1.f));
+    physicsObjects.back()->getShape()->rotate(-0.2f);
+
+    physicsObjects.push_back(new PhysicsObject(new PolygonShape(vertices2, 4), 1.f));
+    physicsObjects.back()->getShape()->move(Vec2(0, 1.5f));
+    physicsObjects.back()->getShape()->rotate(0.2f);
 
     for (int i = 0; i < physicsObjects.size(); i++) {
         physicsObjects[i]->getShape()->calculateAABB();
@@ -89,7 +103,7 @@ void BasePhysicsService::nextFrame() {
 
             CollisionInfo *collisionInfo = collisionInfos[collisionId];
 //            if (collisionInfo == NULL) {
-                collisionInfo = collisionInfos[collisionId] = new CollisionInfo(po1, po2);
+            collisionInfo = collisionInfos[collisionId] = new CollisionInfo(po1, po2);
 //            }
 //
 //            if (!collisionInfo->isCalculateNewCollision()) {
@@ -98,28 +112,29 @@ void BasePhysicsService::nextFrame() {
 //                }
 //            } else {
 //                collisionInfo->calculateDiff();
-                for (int k = 0; k < po1->getShape()->getSimpleShapesCount(); k++) {
-                    for (int l = 0; l < po2->getShape()->getSimpleShapesCount(); l++) {
-                        BaseShape *shape1 = po1->getShape()->getChildren(k);
-                        BaseShape *shape2 = po2->getShape()->getChildren(l);
+            for (int k = 0; k < po1->getShape()->getSimpleShapesCount(); k++) {
+                for (int l = 0; l < po2->getShape()->getSimpleShapesCount(); l++) {
+                    BaseShape *shape1 = po1->getShape()->getChildren(k);
+                    BaseShape *shape2 = po2->getShape()->getChildren(l);
 //                        if (!AABB::isIntersect(shape1->getExtendedAABB(),
 //                                               shape2->getExtendedAABB())) {
 //                            continue;
 //                        }
-                        newCollisionsCount++;
-                        Collision *c = CollisionFactory::createCollision(shape1, shape2);
-                        if (c != NULL) {
-                            collisionInfo->addConstraint(c);
+                    newCollisionsCount++;
+                    std::vector<Collision *> c = CollisionFactory::createCollision((PolygonShape *) shape1, (PolygonShape *) shape2);
+                    if (!c.empty()) {
+                        for (int collisionNumber = 0; collisionNumber < c.size(); collisionNumber++) {
+                            collisionInfo->addConstraint(c[collisionNumber]);
                         }
                     }
                 }
-                if (!collisionInfo->isEmpty()) {
-                    collisionInfos1.push_back(collisionInfo);
-                }
+            }
+            if (!collisionInfo->isEmpty()) {
+                collisionInfos1.push_back(collisionInfo);
+            }
 //            }
         }
     }
-
 
     LOGE("new collisions count %d", newCollisionsCount);
 
@@ -129,7 +144,7 @@ void BasePhysicsService::nextFrame() {
 
 
     double updateTime = now();
-    for (int iteration = 0; iteration < 1; iteration++) {
+    for (int iteration = 0; iteration < 5; iteration++) {
         for (int i = 0; i < collisionInfos1.size(); i++) {
             collisionInfos1[i]->fix();
         }

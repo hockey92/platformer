@@ -50,9 +50,9 @@ Collision *CollisionFactory::createCollision(BaseShape *shape1, BaseShape *shape
         Collision *result = createCollision((CircleShape *) shape2, (SegmentShape *) shape1);
         result->swap();
         return result;
-    } else if (shape1->type() == ShapeTypes::POLYGON && shape2->type() == ShapeTypes::POLYGON) {
+    }/* else if (shape1->type() == ShapeTypes::POLYGON && shape2->type() == ShapeTypes::POLYGON) {
         return createCollision((PolygonShape *) shape1, (PolygonShape *) shape2);
-    }
+    }*/
     return NULL;
 }
 
@@ -77,28 +77,59 @@ Collision *CollisionFactory::createCollision(CircleShape *c, SegmentShape *s) {
     return new Collision(n, r1, r2, penetration);
 }
 
-Collision *CollisionFactory::createCollision(PolygonShape *polygon1, PolygonShape *polygon2) {
+std::vector<Collision *> CollisionFactory::createCollision(PolygonShape *polygon1,
+                                                           PolygonShape *polygon2) {
     float penDepth;
     std::vector<std::pair<float, int> > pointNumbers(10);
     int lineNumber;
-    CollisionFactory::createCollision(polygon1, polygon2, penDepth, lineNumber, pointNumbers);
+    float penetratedPoints[100];
 
-    if (penDepth >= 0.0f) {
-        Vec2 n = polygon1->getLines()[lineNumber].getNormal();
-        Vec2 r1 = polygon2->getVertex(pointNumbers.back().second) + n * pointNumbers.back().first -
-                  polygon1->getCenter();
-        Vec2 r2 = polygon2->getVertices()[pointNumbers.back().second];
-        return new Collision(n, r1, r2, pointNumbers.back().first);
+    std::vector<Collision *> collisions;
+
+    CollisionFactory::createCollision(polygon1, polygon2, penDepth,
+                                      lineNumber, pointNumbers, penetratedPoints);
+
+    if (penDepth < 0.0f) {
+        collisions.clear();
+        return collisions;
     }
 
-    return NULL;
+    for (int i = 0; i < pointNumbers.size(); i++) {
+        Vec2 n = polygon1->getLines()[lineNumber].getNormal();
+        Vec2 r1 = polygon2->getVertex(pointNumbers[i].second) + n * pointNumbers[i].first -
+                  polygon1->getCenter();
+        Vec2 r2 = polygon2->getVertices()[pointNumbers[i].second];
+        if (penetratedPoints[pointNumbers[i].second]) {
+            collisions.push_back(new Collision(n, r1, r2, pointNumbers[i].first));
+        }
+    }
+
+    CollisionFactory::createCollision(polygon2, polygon1, penDepth,
+                                      lineNumber, pointNumbers, penetratedPoints);
+
+    if (penDepth < 0.0f) {
+        collisions.clear();
+        return collisions;
+    }
+
+    for (int i = 0; i < pointNumbers.size(); i++) {
+        Vec2 n = polygon2->getLines()[lineNumber].getNormal();
+        Vec2 r2 = polygon1->getVertex(pointNumbers[i].second) + n * pointNumbers[i].first -
+                  polygon2->getCenter();
+        Vec2 r1 = polygon1->getVertices()[pointNumbers[i].second];
+        if (penetratedPoints[pointNumbers[i].second]) {
+            collisions.push_back(new Collision(n * -1, r1, r2, pointNumbers[i].first));
+        }
+    }
+
+    return collisions;
 }
 
 bool CollisionFactory::createCollision(PolygonShape *polygon1, PolygonShape *polygon2,
                                        float &penDepth, int &lineNumber,
-                                       std::vector<std::pair<float, int> > &pointNumbers) {
+                                       std::vector<std::pair<float, int> > &pointNumbers,
+                                       float *penetratedPoints) {
     penDepth = -1;
-    char penetratedPoints[polygon2->getVerticesSize()];
     for (int i = 0; i < polygon2->getVerticesSize(); i++) {
         penetratedPoints[i] = 1;
     }

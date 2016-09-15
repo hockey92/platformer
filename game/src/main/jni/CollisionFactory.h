@@ -16,9 +16,10 @@ public:
     static Collision *createCollision(BaseShape *shape1, BaseShape *shape2);
 
     static bool createCollision(PolygonShape *polygon1, PolygonShape *polygon2, float &penDepth,
-                                int &lineNumber, std::vector<std::pair<float, int> > &pointNumbers);
+                                int &lineNumber, std::vector<std::pair<float, int> > &pointNumbers,
+                                float *penetratedPoints);
 
-    static Collision *createCollision(PolygonShape *polygon1, PolygonShape *polygon2);
+    static std::vector<Collision *> createCollision(PolygonShape *polygon1, PolygonShape *polygon2);
 
 private:
     static Collision *createCollision(CircleShape *circle1, CircleShape *circle2);

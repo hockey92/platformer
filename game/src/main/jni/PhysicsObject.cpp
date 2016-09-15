@@ -14,6 +14,8 @@ PhysicsObject::PhysicsObject(BaseShape *shape, float invM) : angleVel(0),
     idMutex.lock();
     id = idCounter++;
     idMutex.unlock();
+
+    invI = invM > 0 ? 12.0f * invM / (0.4f * 0.4f + 0.4f * 0.4f) : 0;
 }
 
 void PhysicsObject::updatePos() {
@@ -26,7 +28,7 @@ void PhysicsObject::updatePos() {
 
 void PhysicsObject::applyGravity() {
     if (invM > 0.f) {
-        vel += Vec2(0.0f, -9.8f) * DT;
+        vel += Vec2(0.0f, -1.8f) * DT;
     }
 }
 

@@ -1,7 +1,5 @@
 #include "Constraint.h"
 #include "ImpulseFactory.h"
-#include "common.h"
-#include "Collision.h"
 
 Constraint::Constraint(PhysicsObject *o1, PhysicsObject *o2, Collision *c) {
     set(o1, o2, c);
@@ -12,8 +10,8 @@ bool Constraint::fix() {
     float oldImpulse = totalImpulse;
     totalImpulse = clamp(oldImpulse + j);
     j = totalImpulse - oldImpulse;
-    o1->applyImpulse(-j * o1->getInvM() * c->getNormal());
-    o2->applyImpulse(j * o2->getInvM() * c->getNormal());
+    o1->applyImpulse(-j * o1->getInvM() * c->n(), -j * o1->getInvI() * Vec2::cross(c->r1(), c->n()));
+    o2->applyImpulse(j * o2->getInvM() * c->n(), j * o2->getInvI() * Vec2::cross(c->r2(), c->n()));
 
 //    if (fabsf(j) > 1.0f) {
 //        LOGE("impulse %f", fabsf(j));

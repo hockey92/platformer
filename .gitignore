@@ -3,3 +3,4 @@ build/*
 game/build*
 .gradle/*
 .idea/*
+game/game.iml

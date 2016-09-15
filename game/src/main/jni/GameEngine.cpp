@@ -94,10 +94,10 @@ public:
                             Vec2(-0.02f, -0.02f),
                             Vec2(0.02f, -0.02f)};
         c1 = new PolygonShape(vertices3, 4);
-//        c1->move(polygon2->getCenter() + collision->getR2());
+//        c1->move(polygon2->getCenter() + collision->r2());
 
         c2 = new PolygonShape(vertices3, 4);
-//        c2->move(polygon1->getCenter() + collision->getR1());
+//        c2->move(polygon1->getCenter() + collision->r1());
 
 
 
@@ -145,14 +145,14 @@ public:
 
         polygon2->rotate(-0.01f);
 //
-        Collision *collision = CollisionFactory::createCollision(polygon1, polygon2);
-
-        if (collision != NULL) {
-            c1->setCenter(polygon2->getCenter() + collision->getR2());
-            c2->setCenter(polygon1->getCenter() + collision->getR1());
-            c1->draw(mvp);
-            c2->draw(mvp);
-        }
+//        Collision *collision = CollisionFactory::createCollision(polygon1, polygon2);
+//
+//        if (collision != NULL) {
+//            c1->setCenter(polygon2->getCenter() + collision->r2());
+//            c2->setCenter(polygon1->getCenter() + collision->r1());
+//            c1->draw(mvp);
+//            c2->draw(mvp);
+//        }
 
 //        float *result = DrawUtils::createCoordsForTextureShader(-0.03f, 0.03f, -0.03f, 0.03f, 0.f,
 //                                                                1.f, 0.f, 1.f);
@@ -179,8 +179,8 @@ public:
 //            shader->render();
 //        }
 
-        polygon1->draw(mvp);
-        polygon2->draw(mvp);
+//        polygon1->draw(mvp);
+//        polygon2->draw(mvp);
 
 
         for (int i = 0; i < basePhysicsService->physicsObjects.size(); i++) {

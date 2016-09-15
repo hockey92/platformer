@@ -32,7 +32,12 @@ public:
 
     void setInvM(float invM) { this->invM = invM; }
 
-    void applyImpulse(const Vec2 &dVel) { vel += dVel; }
+    void applyImpulse(const Vec2 &dVel, float dAngleVel) {
+        if (invM > 0) {
+            vel += dVel;
+            angleVel += dAngleVel;
+        }
+    }
 
     BaseShape *getShape() const { return shape; }
 
@@ -50,7 +55,7 @@ public:
 
     void setVisible(bool visible) { this->visible = visible; }
 
-    unsigned int getId() const { return id;}
+    unsigned int getId() const { return id; }
 
 private:
     Vec2 vel;
