@@ -57,7 +57,7 @@ public class AccelerometerGraphActivity extends Activity {
         });
         setContentView(glSurfaceView);
 
-        new Thread(new Runnable() {
+        Thread physicsThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 while (true) {
@@ -65,13 +65,15 @@ public class AccelerometerGraphActivity extends Activity {
                     AccelerometerGraphJNI.pause();
                     System.out.println("time physics " + (System.currentTimeMillis() - time));
                     try {
-                        Thread.sleep(20);
+                        Thread.sleep(1000 / 60);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
             }
-        }).start();
+        });
+        physicsThread.setDaemon(true);
+        physicsThread.start();
     }
 
     @Override

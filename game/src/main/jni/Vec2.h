@@ -43,7 +43,7 @@ public:
     }
 
     static float cross(const Vec2 &v1, const Vec2 &v2) {
-        return v1.values[0] * v2.values[1] + v1.values[1] * v2.values[0];
+        return v1.values[0] * v2.values[1] - v1.values[1] * v2.values[0];
     }
 
     static Vec2 cross(const Vec2 &v1, float v2) {

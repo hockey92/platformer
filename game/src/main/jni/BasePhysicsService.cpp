@@ -6,55 +6,29 @@
 BasePhysicsService::BasePhysicsService() : status(STOPPED) {
     pthread_mutex_init(&mutex, NULL);
 
-//    float x = 0.8;
-//    float y = 0.8;
-//
-//    for (int i = 0; i < 200; i++) {
-//        physicsObjects.push_back(new PhysicsObject(new CircleShape(0.03f), 10.f));
-//        physicsObjects[i]->getShape()->move(Vec2(x, y));
-//        x -= 0.1;
-//
-//        if (x < -0.7) {
-//            y -= 0.1;
-//            x = 0.8;
-//        }
-//    }
-//    physicsObjects.push_back(new PhysicsObject(new SegmentShape(Vec2(-2, -1), Vec2(2, -1)), 0));
-//    physicsObjects.back()->getShape()->rotate(0.2);
-//    physicsObjects.push_back(new PhysicsObject(new SegmentShape(Vec2(-1, -2), Vec2(-1, 2)), 0));
-//    physicsObjects.push_back(new PhysicsObject(new SegmentShape(Vec2(1, -2), Vec2(1, 2)), 0));
-//    physicsObjects.push_back(new PhysicsObject(new SegmentShape(Vec2(2, 1), Vec2(-2, 1)), 0));
-
-
-    Vec2 vertices1[] = {Vec2(1.9f, 0.1f),
-                        Vec2(-1.9f, 0.1f),
-                        Vec2(-1.9f, -0.1f),
-                        Vec2(1.9f, -0.1f)};
+    Vec2 vertices1[] = {Vec2(19.f, 1.f),
+                        Vec2(-19.f, 1.f),
+                        Vec2(-19.f, -1.f),
+                        Vec2(19.f, -1.f)};
     physicsObjects.push_back(new PhysicsObject(new PolygonShape(vertices1, 4), 0));
-    physicsObjects.back()->getShape()->move(Vec2(0, -1));
-//    physicsObjects.back()->getShape()->rotate(0.1f);
+    physicsObjects.back()->getShape()->move(Vec2(0, -10.f));
+//    physicsObjects.back()->getShape()->rotate(0.2f);
 
-    Vec2 vertices2[] = {Vec2(0.2f, 0.2f),
-                        Vec2(-0.2f, 0.2f),
-                        Vec2(-0.2f, -0.2f),
-                        Vec2(0.2f, -0.2f)};
+    Vec2 vertices2[] = {Vec2(2.f, 2.f),
+                        Vec2(-2.f, 2.f),
+                        Vec2(-2.f, -2.f),
+                        Vec2(2.f, -2.f)};
 
-    physicsObjects.push_back(new PhysicsObject(new PolygonShape(vertices2, 4), 1.f));
-    physicsObjects.back()->getShape()->move(Vec2(0.05f, 0));
-    physicsObjects.back()->getShape()->rotate(0.0f);
-//    physicsObjects.back()->setAngleVel(1.0f);
+    for (int i = 1; i <= 5; i++) {
+        for (int j = 0; j < i; j++) {
+            physicsObjects.push_back(new PhysicsObject(new PolygonShape(vertices2, 4), 1.f));
+            physicsObjects.back()->getShape()->move(
+                    Vec2(-5 * (i / 2) - (i % 2) * 2.5f + j * 5, -i * 5 + 30));
+        }
+    }
 
-    physicsObjects.push_back(new PhysicsObject(new PolygonShape(vertices2, 4), 1.f));
-    physicsObjects.back()->getShape()->move(Vec2(0, -0.5f));
-    physicsObjects.back()->getShape()->rotate(0.1f);
-
-    physicsObjects.push_back(new PhysicsObject(new PolygonShape(vertices2, 4), 1.f));
-    physicsObjects.back()->getShape()->move(Vec2(0, 1.f));
-    physicsObjects.back()->getShape()->rotate(-0.2f);
-
-    physicsObjects.push_back(new PhysicsObject(new PolygonShape(vertices2, 4), 1.f));
-    physicsObjects.back()->getShape()->move(Vec2(0, 1.5f));
-    physicsObjects.back()->getShape()->rotate(0.2f);
+    physicsObjects.pop_back();
+    physicsObjects.pop_back();
 
     for (int i = 0; i < physicsObjects.size(); i++) {
         physicsObjects[i]->getShape()->calculateAABB();
@@ -84,11 +58,13 @@ void BasePhysicsService::nextFrame() {
         }
         po->update();
         po->applyGravity();
-        po->calculateExtendedAABB();
+//        po->calculateExtendedAABB();
     }
 
     int newCollisionsCount = 0;
 
+    double updateTime = now();
+    int skiped = 0;
     for (int i = 0; i < physicsObjects.size(); i++) {
         PhysicsObject *po1 = physicsObjects[i];
         if (!po1->isActive()) {
@@ -102,9 +78,11 @@ void BasePhysicsService::nextFrame() {
             int collisionId = IdUtils::createKey(po1->getId(), po2->getId());
 
             CollisionInfo *collisionInfo = collisionInfos[collisionId];
-//            if (collisionInfo == NULL) {
-            collisionInfo = collisionInfos[collisionId] = new CollisionInfo(po1, po2);
-//            }
+            if (collisionInfo == NULL) {
+                collisionInfo = collisionInfos[collisionId] = new CollisionInfo(po1, po2);
+            }
+
+            collisionInfo->calculateDiff();
 //
 //            if (!collisionInfo->isCalculateNewCollision()) {
 //                if (!collisionInfo->isEmpty()) {
@@ -116,14 +94,16 @@ void BasePhysicsService::nextFrame() {
                 for (int l = 0; l < po2->getShape()->getSimpleShapesCount(); l++) {
                     BaseShape *shape1 = po1->getShape()->getChildren(k);
                     BaseShape *shape2 = po2->getShape()->getChildren(l);
-//                        if (!AABB::isIntersect(shape1->getExtendedAABB(),
-//                                               shape2->getExtendedAABB())) {
-//                            continue;
-//                        }
+                    if (!AABB::isIntersect(shape1->getAABB(), shape2->getAABB())) {
+                        skiped++;
+                        continue;
+                    }
                     newCollisionsCount++;
-                    std::vector<Collision *> c = CollisionFactory::createCollision((PolygonShape *) shape1, (PolygonShape *) shape2);
+                    std::vector<Collision *> c = CollisionFactory::createCollision(
+                            (PolygonShape *) shape1, (PolygonShape *) shape2);
                     if (!c.empty()) {
-                        for (int collisionNumber = 0; collisionNumber < c.size(); collisionNumber++) {
+                        for (int collisionNumber = 0;
+                             collisionNumber < c.size(); collisionNumber++) {
                             collisionInfo->addConstraint(c[collisionNumber]);
                         }
                     }
@@ -135,39 +115,18 @@ void BasePhysicsService::nextFrame() {
 //            }
         }
     }
+    LOGE("updateTime %f", now() - updateTime);
 
     LOGE("new collisions count %d", newCollisionsCount);
 
-//    for (int i = 0; i < collisionInfos1.size(); i++) {
-//        collisionInfos1[i]->reset();
-//    }
+    LOGE("skiped %d", skiped);
 
-
-    double updateTime = now();
-    for (int iteration = 0; iteration < 5; iteration++) {
+    for (int iteration = 0; iteration < 10; iteration++) {
         for (int i = 0; i < collisionInfos1.size(); i++) {
             collisionInfos1[i]->fix();
         }
     }
-    LOGE("updateTime %f", now() - updateTime);
-//
-//    LOGE("collision info size %d", collisionInfos1.size());
 
-//    LOGE("num of constraints %d, vector size %d", realConstraintSize, constraints.size());
-
-//    bool contact = false;
-//    for (int iteration = 0; iteration < 10; iteration++) {
-//        for (int constraintNumber = 0; constraintNumber < realConstraintSize; constraintNumber++) {
-//            if (constraints[constraintNumber].fix()) {
-//                contact = true;
-//            }
-//        }
-//    }
-//    if (contact) {
-//        audioService.push();
-//    }
-
-//    pthread_mutex_lock(&mutex);
     for (int i = 0; i < physicsObjects.size(); i++) {
         PhysicsObject *po = physicsObjects[i];
         if (!po->isActive()) {
@@ -175,15 +134,8 @@ void BasePhysicsService::nextFrame() {
         }
         po->updatePos();
     }
-//    pthread_mutex_unlock(&mutex);
 
     doActionAfter();
-
-//    double afterTime = now();
-//    unsigned int delay = 30 - (unsigned int) (afterTime - beforeTime);
-//    delay = delay < 2 ? 2 : delay;
-//    LOGE("delay %d", delay);
-//    usleep(delay * 1000);
 }
 
 int BasePhysicsService::getStatus() {

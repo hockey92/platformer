@@ -32,6 +32,8 @@ public:
 
     Vec2 getVertex(int i) const;
 
+    virtual void calculateInnerAABB();
+
 private:
     Vec2 *initVertices;
     Vec2 *vertices;

@@ -31,6 +31,8 @@ public:
 
     AABB *getExtendedAABB();
 
+    AABB *getAABB();
+
     virtual void calculateInnerAABB();
 
     virtual void calculateAABB();

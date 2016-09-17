@@ -1,7 +1,7 @@
 #ifndef NATIVE_ACTIVITY_CONSTANTS_H
 #define NATIVE_ACTIVITY_CONSTANTS_H
 
-#define DT 0.02f
+#define DT 0.0166f
 #define PI 3.141592f
 #define INIT_GLASS_VEL -0.3f
 

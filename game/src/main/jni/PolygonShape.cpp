@@ -26,6 +26,7 @@ PolygonShape::PolygonShape(Vec2 *vertices, int verticesSize) {
 
     lines = new Line[verticesSize];
     calculateLines();
+    calculateAABB();
 }
 
 PolygonShape::~PolygonShape() {
@@ -86,4 +87,29 @@ void PolygonShape::move(const Vec2 &coords) {
 
 Vec2 PolygonShape::getVertex(int i) const {
     return vertices[i] + center;
+}
+
+void PolygonShape::calculateInnerAABB() {
+    float minX = 1000000, maxX = -1000000;
+    float minY = 1000000, maxY = -1000000;
+    for (int i = 0; i < verticesSize; i++) {
+        Vec2 realVertex = getVertex(i);
+        if (realVertex.x() >= maxX) {
+            maxX = realVertex.x();
+        }
+        if (realVertex.x() <= minX) {
+            minX = realVertex.x();
+        }
+        if (realVertex.y() >= maxY) {
+            maxY = realVertex.y();
+        }
+        if (realVertex.y() <= minY) {
+            minY = realVertex.y();
+        }
+    }
+    if (aabb == NULL) {
+        aabb = new AABB(minX, minY, maxX, maxY);
+    } else {
+        aabb->set(minX, minY, maxX, maxY);
+    }
 }

@@ -96,3 +96,7 @@ void BaseShape::setCenter(const Vec2 &center) {
 unsigned int BaseShape::type() const {
     return ShapeTypes::BASE_SHAPE;
 }
+
+AABB *BaseShape::getAABB() {
+    return aabb;
+}

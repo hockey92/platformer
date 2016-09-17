@@ -4,6 +4,7 @@
 #include "Vec2.h"
 #include "BaseShape.h"
 #include "Mutex.h"
+#include "Constants.h"
 
 class PhysicsObject {
 

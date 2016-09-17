@@ -10,7 +10,7 @@ public:
 
     virtual ~Constraint();
 
-    bool fix();
+    void fix();
 
     void set(PhysicsObject *o1, PhysicsObject *o2, Collision *c);
 
@@ -20,9 +20,11 @@ private:
     PhysicsObject *o1;
     PhysicsObject *o2;
     Collision *c;
-    float totalImpulse;
+    float normalTotalImpulse;
+    float tangentTotalImpulse;
 
     float clamp(float impulse);
+    float clamp(float impulse, float min, float max);
 };
 
 #endif //NATIVE_ACTIVITY_CONSTRAINT_H
