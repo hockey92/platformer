@@ -65,7 +65,12 @@ public class AccelerometerGraphActivity extends Activity {
                     AccelerometerGraphJNI.pause();
                     System.out.println("time physics " + (System.currentTimeMillis() - time));
                     try {
-                        Thread.sleep(1000 / 60);
+
+                        long timeToWait = 20 - (System.currentTimeMillis() - time);
+
+                        System.out.println("time to wait " + timeToWait);
+
+                        Thread.sleep(timeToWait <= 0 ? 2 : timeToWait);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

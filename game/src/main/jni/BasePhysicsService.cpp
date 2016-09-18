@@ -7,52 +7,66 @@
 BasePhysicsService::BasePhysicsService() : status(STOPPED) {
     pthread_mutex_init(&mutex, NULL);
 
-    Vec2 vertices1[] = {Vec2(19.f, 1.f),
-                        Vec2(-19.f, 1.f),
-                        Vec2(-19.f, -1.f),
-                        Vec2(19.f, -1.f)};
-    physicsObjects.push_back(new PhysicsObject(new PolygonShape(vertices1, 4), 0));
-    physicsObjects.back()->getShape()->move(Vec2(0, -10.f));
-//    physicsObjects.back()->getShape()->rotate(0.2f);
+    physicsObjects.push_back(new RectanglePhysicsObject(100.f, 1.f, 0.f));
+    physicsObjects.back()->getShape()->move(Vec2(0, -20.f));
 
-    Vec2 vertices2[] = {Vec2(2.f, 2.f),
-                        Vec2(-2.f, 2.f),
-                        Vec2(-2.f, -2.f),
-                        Vec2(2.f, -2.f)};
+    physicsObjects.push_back(new RectanglePhysicsObject(1.f, 100.f, 0.f));
+    physicsObjects.back()->getShape()->move(Vec2(20, 0.f));
 
-//    physicsObjects.push_back(new RectanglePhysicsObject(2, 2, 1.0f));
-//    physicsObjects.back()->getShape()->move(Vec2(-8.f, 7.f));
-//
-//    physicsObjects.push_back(new RectanglePhysicsObject(2, 2, 1.0f));
-//    physicsObjects.back()->getShape()->move(Vec2(-10.f, 7.f));
+/////////////////////////////////
+    physicsObjects.push_back(new RectanglePhysicsObject(1.f, 10.f, 1.f));
+    physicsObjects.back()->getShape()->move(Vec2(5.0f, -14.5f));
 
-//    Vec2 vertices4[] = {Vec2(15.f, 0.5f),
-//                        Vec2(-15.f, 0.5f),
-//                        Vec2(-15.f, -0.5f),
-//                        Vec2(15.f, -0.5f)};;
-//
-//    physicsObjects.push_back(new RectanglePhysicsObject(36.0f, 1.f, 1.0f));
-//    physicsObjects.back()->getShape()->move(Vec2(0.f, 3.f));
-//
-//    Vec2 vertices3[] = {Vec2(0.f, 1.f),
-//                        Vec2(-2.f, -2.f),
-//                        Vec2(2.f, -2.f)};
-//
-//    physicsObjects.push_back(new PhysicsObject(new PolygonShape(vertices3, 3), 0.f));
-//    physicsObjects.back()->getShape()->move(Vec2(0.f, -8.f));
+    physicsObjects.push_back(new RectanglePhysicsObject(1.f, 10.f, 1.f));
+    physicsObjects.back()->getShape()->move(Vec2(10.0f, -14.5f));
 
-    for (int i = 1; i <= 6; i++) {
-        for (int j = 0; j < i; j++) {
-            if (i == 5 && j == 2) {
-                continue;
-            }
-            physicsObjects.push_back(new PhysicsObject(new PolygonShape(vertices2, 4), 1.f));
-            physicsObjects.back()->getShape()->move(
-                    Vec2(-5 * (i / 2) - (i % 2) * 2.5f + j * 5, -i * 5 + 30));
-        }
-    }
+    physicsObjects.push_back(new RectanglePhysicsObject(1.f, 10.f, 1.f));
+    physicsObjects.back()->getShape()->move(Vec2(15.0f, -14.5f));
 
-    physicsObjects.pop_back();
+    physicsObjects.push_back(new RectanglePhysicsObject(12.f, 1.f, 1.f));
+    physicsObjects.back()->getShape()->move(Vec2(10.0f, -9.0f));
+///////////////////////////////////////
+    physicsObjects.push_back(new RectanglePhysicsObject(1.f, 10.f, 1.f));
+    physicsObjects.back()->getShape()->move(Vec2(5.0f, -3.5f));
+
+    physicsObjects.push_back(new RectanglePhysicsObject(1.f, 10.f, 1.f));
+    physicsObjects.back()->getShape()->move(Vec2(10.0f, -3.5f));
+
+    physicsObjects.push_back(new RectanglePhysicsObject(1.f, 10.f, 1.f));
+    physicsObjects.back()->getShape()->move(Vec2(15.0f, -3.5f));
+
+    physicsObjects.push_back(new RectanglePhysicsObject(12.f, 1.f, 1.f));
+    physicsObjects.back()->getShape()->move(Vec2(10.0f, 2.0f));
+//////////////////////////////////////////////////////////
+    physicsObjects.push_back(new RectanglePhysicsObject(1.f, 10.f, 1.f));
+    physicsObjects.back()->getShape()->move(Vec2(5.0f, 7.5f));
+
+    physicsObjects.push_back(new RectanglePhysicsObject(1.f, 10.f, 1.f));
+    physicsObjects.back()->getShape()->move(Vec2(15.0f, 7.5f));
+
+    physicsObjects.push_back(new RectanglePhysicsObject(1.f, 10.f, 1.f));
+    physicsObjects.back()->getShape()->move(Vec2(10.0f, 7.5f));
+
+    physicsObjects.push_back(new RectanglePhysicsObject(12.f, 1.f, 1.f));
+    physicsObjects.back()->getShape()->move(Vec2(10.0f, 13.0f));
+//////////////////////////////////////////////////
+    physicsObjects.push_back(new RectanglePhysicsObject(2.f, 2.f, 1.0f));
+    physicsObjects.back()->getShape()->move(Vec2(-40.0f, 0.0f));
+    physicsObjects.back()->setVel(Vec2(40.f, 0.f));
+
+
+//    for (int i = 1; i <= 6; i++) {
+//        for (int j = 0; j < i; j++) {
+////            if (i == 5 && j == 2) {
+////                continue;
+////            }
+//            physicsObjects.push_back(new RectanglePhysicsObject(4.f, 4.f, 1.f));
+//            physicsObjects.back()->getShape()->move(
+//                    Vec2(-5 * (i / 2) - (i % 2) * 2.5f + j * 5 + 20, -i * 5 + 20));
+//        }
+//    }
+
+//    physicsObjects.pop_back();
 
     for (int i = 0; i < physicsObjects.size(); i++) {
         physicsObjects[i]->getShape()->calculateAABB();
@@ -111,6 +125,7 @@ void BasePhysicsService::nextFrame() {
                     BaseShape *shape1 = po1->getShape()->getChildren(k);
                     BaseShape *shape2 = po2->getShape()->getChildren(l);
                     if (!AABB::isIntersect(shape1->getAABB(), shape2->getAABB())) {
+                        collisionInfo->clean();
                         skiped++;
                         continue;
                     }
@@ -139,7 +154,7 @@ void BasePhysicsService::nextFrame() {
         collisionInfos1[i]->applyWarmStarting();
     }
 
-    for (int iteration = 0; iteration < 10; iteration++) {
+    for (int iteration = 0; iteration < 5; iteration++) {
         for (int i = 0; i < collisionInfos1.size(); i++) {
             collisionInfos1[i]->fix();
         }

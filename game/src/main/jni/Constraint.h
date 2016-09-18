@@ -20,6 +20,8 @@ public:
 
     void applyWarmStarting();
 
+    void deleteCollision();
+
 private:
     PhysicsObject *o1;
     PhysicsObject *o2;

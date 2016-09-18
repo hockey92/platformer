@@ -93,6 +93,11 @@ void CollisionInfo::fix() {
 }
 
 void CollisionInfo::clean() {
+
+    for (int i = 0; i < _size; i++) {
+        _constraints[i]->deleteCollision();
+    }
+
     _size = 0;
 }
 

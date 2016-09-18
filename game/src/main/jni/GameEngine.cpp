@@ -48,7 +48,7 @@ public:
         mvp[0] = 1.0f;
         mvp[5] = rel;
         mvp[10] = 1.0f;
-        mvp[15] = 20.0f;
+        mvp[15] = 40.0f;
     }
 
     void update() {
