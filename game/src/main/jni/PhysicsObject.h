@@ -31,8 +31,6 @@ public:
 
     float getInvI() const { return invI; }
 
-    void setInvM(float invM) { this->invM = invM; }
-
     void applyImpulse(const Vec2 &dVel, float dAngleVel) {
         if (invM > 0) {
             vel += dVel;
@@ -57,6 +55,15 @@ public:
     void setVisible(bool visible) { this->visible = visible; }
 
     unsigned int getId() const { return id; }
+
+protected:
+    PhysicsObject();
+
+    void setShape(BaseShape *shape) { this->shape = shape; }
+
+    void setInvM(float invM) { this->invM = invM; }
+
+    void setInvI(float invI) { this->invI = invI; }
 
 private:
     Vec2 vel;

@@ -17,7 +17,8 @@ void Constraint::fix() {
 
     j = ImpulseFactory::createImpulse(o1, o2, c, true);
     oldImpulse = tangentTotalImpulse;
-    tangentTotalImpulse = clamp(oldImpulse + j, -0.4f * normalTotalImpulse, 0.4f * normalTotalImpulse);
+    tangentTotalImpulse = clamp(oldImpulse + j,
+                                -0.5f * normalTotalImpulse, 0.5f * normalTotalImpulse);
     j = tangentTotalImpulse - oldImpulse;
     o1->applyImpulse(-j * o1->getInvM() * c->t(),
                      -j * o1->getInvI() * Vec2::cross(c->r1(), c->t()));
@@ -58,4 +59,18 @@ float Constraint::clamp(float impulse, float min, float max) {
         return max;
     }
     return impulse;
+}
+
+void Constraint::setCollision(Collision *newCollision) {
+    Collision *oldCollision = c;
+    c = newCollision;
+    delete oldCollision;
+}
+
+void Constraint::applyWarmStarting() {
+
+    Vec2 impulse = normalTotalImpulse * c->n() + tangentTotalImpulse * c->t();
+
+    o1->applyImpulse(-o1->getInvM() * impulse, -o1->getInvI() * Vec2::cross(c->r1(), impulse));
+    o2->applyImpulse(o2->getInvM() * impulse, o2->getInvI() * Vec2::cross(c->r2(), impulse));
 }

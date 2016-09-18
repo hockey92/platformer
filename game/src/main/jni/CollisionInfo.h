@@ -1,6 +1,7 @@
 #ifndef INC_100BALLS_COLLISIONINFO_H
 #define INC_100BALLS_COLLISIONINFO_H
 
+#include <stl/_vector.h>
 #include "PhysicsObject.h"
 #include "Constraint.h"
 
@@ -18,28 +19,34 @@ public:
 
     void addConstraint(Collision *c);
 
+    void addConstraints(const std::vector<Collision *> &collisions);
+
     bool isEmpty();
 
     void fix();
 
+    void clean();
+
+    void applyWarmStarting();
+
 private:
-    PhysicsObject *o1;
-    PhysicsObject *o2;
+    PhysicsObject *_o1;
+    PhysicsObject *_o2;
 
     void swapIfNeeded();
 
-    Vec2 diff;
-    float angle1;
-    float angle2;
+    Vec2 _diff;
+    float _angle1;
+    float _angle2;
 
     int _size;
     int _maxSize;
 
-    bool swapped;
+    bool _swapped;
 
-    bool newCollisionInfo;
+    bool _newCollisionInfo;
 
-    Constraint *constraints[1000];
+    Constraint *_constraints[1000];
 
     friend bool operator<(const CollisionInfo &x, const CollisionInfo &y);
 };

@@ -9,7 +9,7 @@ class Collision {
 public:
     Collision(const Vec2 &normal, const Vec2 &r1, const Vec2 &r2, float dist) :
             _normal(normal),
-            _tangent(Vec2(normal.y(), -normal.x())),
+            _tangent(Vec2::cross(normal, 1.0f)),
             _r1(r1),
             _r2(r2),
             _dist(dist) { }

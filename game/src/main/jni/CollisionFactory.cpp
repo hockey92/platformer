@@ -96,7 +96,7 @@ std::vector<Collision *> CollisionFactory::createCollision(PolygonShape *polygon
 
     for (int i = 0; i < pointNumbers.size(); i++) {
         Vec2 n = polygon1->getLines()[lineNumber].getNormal();
-        Vec2 r1 = polygon2->getVertex(pointNumbers[i].second) + n * pointNumbers[i].first -
+        Vec2 r1 = polygon2->getVertex(pointNumbers[i].second) -
                   polygon1->getCenter();
         Vec2 r2 = polygon2->getVertices()[pointNumbers[i].second];
         if (penetratedPoints[pointNumbers[i].second]) {
@@ -114,7 +114,7 @@ std::vector<Collision *> CollisionFactory::createCollision(PolygonShape *polygon
 
     for (int i = 0; i < pointNumbers.size(); i++) {
         Vec2 n = polygon2->getLines()[lineNumber].getNormal();
-        Vec2 r2 = polygon1->getVertex(pointNumbers[i].second) + n * pointNumbers[i].first -
+        Vec2 r2 = polygon1->getVertex(pointNumbers[i].second) -
                   polygon2->getCenter();
         Vec2 r1 = polygon1->getVertices()[pointNumbers[i].second];
         if (penetratedPoints[pointNumbers[i].second]) {
