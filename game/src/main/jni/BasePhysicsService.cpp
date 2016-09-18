@@ -2,6 +2,7 @@
 #include "CollisionFactory.h"
 #include "common.h"
 #include "IdUtils.h"
+#include "RectanglePhysicsObject.h"
 
 BasePhysicsService::BasePhysicsService() : status(STOPPED) {
     pthread_mutex_init(&mutex, NULL);
@@ -19,15 +20,38 @@ BasePhysicsService::BasePhysicsService() : status(STOPPED) {
                         Vec2(-2.f, -2.f),
                         Vec2(2.f, -2.f)};
 
-    for (int i = 1; i <= 5; i++) {
+//    physicsObjects.push_back(new RectanglePhysicsObject(2, 2, 1.0f));
+//    physicsObjects.back()->getShape()->move(Vec2(-8.f, 7.f));
+//
+//    physicsObjects.push_back(new RectanglePhysicsObject(2, 2, 1.0f));
+//    physicsObjects.back()->getShape()->move(Vec2(-10.f, 7.f));
+
+//    Vec2 vertices4[] = {Vec2(15.f, 0.5f),
+//                        Vec2(-15.f, 0.5f),
+//                        Vec2(-15.f, -0.5f),
+//                        Vec2(15.f, -0.5f)};;
+//
+//    physicsObjects.push_back(new RectanglePhysicsObject(36.0f, 1.f, 1.0f));
+//    physicsObjects.back()->getShape()->move(Vec2(0.f, 3.f));
+//
+//    Vec2 vertices3[] = {Vec2(0.f, 1.f),
+//                        Vec2(-2.f, -2.f),
+//                        Vec2(2.f, -2.f)};
+//
+//    physicsObjects.push_back(new PhysicsObject(new PolygonShape(vertices3, 3), 0.f));
+//    physicsObjects.back()->getShape()->move(Vec2(0.f, -8.f));
+
+    for (int i = 1; i <= 6; i++) {
         for (int j = 0; j < i; j++) {
+            if (i == 5 && j == 2) {
+                continue;
+            }
             physicsObjects.push_back(new PhysicsObject(new PolygonShape(vertices2, 4), 1.f));
             physicsObjects.back()->getShape()->move(
                     Vec2(-5 * (i / 2) - (i % 2) * 2.5f + j * 5, -i * 5 + 30));
         }
     }
 
-    physicsObjects.pop_back();
     physicsObjects.pop_back();
 
     for (int i = 0; i < physicsObjects.size(); i++) {
@@ -82,14 +106,6 @@ void BasePhysicsService::nextFrame() {
                 collisionInfo = collisionInfos[collisionId] = new CollisionInfo(po1, po2);
             }
 
-            collisionInfo->calculateDiff();
-//
-//            if (!collisionInfo->isCalculateNewCollision()) {
-//                if (!collisionInfo->isEmpty()) {
-//                    collisionInfos1.push_back(collisionInfo);
-//                }
-//            } else {
-//                collisionInfo->calculateDiff();
             for (int k = 0; k < po1->getShape()->getSimpleShapesCount(); k++) {
                 for (int l = 0; l < po2->getShape()->getSimpleShapesCount(); l++) {
                     BaseShape *shape1 = po1->getShape()->getChildren(k);
@@ -99,20 +115,18 @@ void BasePhysicsService::nextFrame() {
                         continue;
                     }
                     newCollisionsCount++;
-                    std::vector<Collision *> c = CollisionFactory::createCollision(
+                    std::vector<Collision *> collisions = CollisionFactory::createCollision(
                             (PolygonShape *) shape1, (PolygonShape *) shape2);
-                    if (!c.empty()) {
-                        for (int collisionNumber = 0;
-                             collisionNumber < c.size(); collisionNumber++) {
-                            collisionInfo->addConstraint(c[collisionNumber]);
-                        }
+                    if (!collisions.empty()) {
+                        collisionInfo->addConstraints(collisions);
+                    } else {
+                        collisionInfo->clean();
                     }
                 }
             }
             if (!collisionInfo->isEmpty()) {
                 collisionInfos1.push_back(collisionInfo);
             }
-//            }
         }
     }
     LOGE("updateTime %f", now() - updateTime);
@@ -120,6 +134,10 @@ void BasePhysicsService::nextFrame() {
     LOGE("new collisions count %d", newCollisionsCount);
 
     LOGE("skiped %d", skiped);
+
+    for (int i = 0; i < collisionInfos1.size(); i++) {
+        collisionInfos1[i]->applyWarmStarting();
+    }
 
     for (int iteration = 0; iteration < 10; iteration++) {
         for (int i = 0; i < collisionInfos1.size(); i++) {

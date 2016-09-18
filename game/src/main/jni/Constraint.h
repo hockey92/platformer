@@ -16,6 +16,10 @@ public:
 
     void reset();
 
+    void setCollision(Collision* newCollision);
+
+    void applyWarmStarting();
+
 private:
     PhysicsObject *o1;
     PhysicsObject *o2;

@@ -18,6 +18,17 @@ PhysicsObject::PhysicsObject(BaseShape *shape, float invM) : angleVel(0),
     invI = invM > 0 ? 12.0f * invM / (4 * 4 + 4 * 4) : 0;
 }
 
+PhysicsObject::PhysicsObject() : angleVel(0),
+                                 shape(NULL),
+                                 invM(0),
+                                 active(true),
+                                 deleted(false),
+                                 visible(true) {
+    idMutex.lock();
+    id = idCounter++;
+    idMutex.unlock();
+}
+
 void PhysicsObject::updatePos() {
     if (shape) {
         shape->rotate(angleVel * DT);
