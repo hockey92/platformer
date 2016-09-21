@@ -56,3 +56,10 @@ void PhysicsObject::calculateExtendedAABB() {
 bool PhysicsObject::isActive() {
     return active && !deleted;
 }
+
+PhysicsObject *PhysicsObject::move(const Vec2 &dPos) {
+    if (shape) {
+        shape->move(dPos);
+    }
+    return this;
+}

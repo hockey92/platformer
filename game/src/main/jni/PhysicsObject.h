@@ -11,6 +11,8 @@ class PhysicsObject {
 public:
     PhysicsObject(BaseShape *shape, float invM);
 
+    PhysicsObject* move(const Vec2& dPos);
+
     virtual ~PhysicsObject();
 
     virtual void update() { }

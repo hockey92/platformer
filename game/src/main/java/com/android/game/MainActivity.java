@@ -23,8 +23,7 @@ import android.os.Bundle;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-
-public class AccelerometerGraphActivity extends Activity {
+public class MainActivity extends Activity {
 
     GLSurfaceView glSurfaceView;
 
@@ -36,23 +35,37 @@ public class AccelerometerGraphActivity extends Activity {
         glSurfaceView.setRenderer(new GLSurfaceView.Renderer() {
             @Override
             public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-                AccelerometerGraphJNI.surfaceCreated();
+                GameEngine.surfaceCreated();
             }
 
             @Override
             public void onSurfaceChanged(GL10 gl, int width, int height) {
-                AccelerometerGraphJNI.surfaceChanged(width, height);
+                GameEngine.surfaceChanged(width, height);
             }
 
             @Override
             public void onDrawFrame(GL10 gl) {
-                AccelerometerGraphJNI.drawFrame();
+                GameEngine.drawFrame();
             }
         });
         glSurfaceView.queueEvent(new Runnable() {
             @Override
             public void run() {
-                AccelerometerGraphJNI.init(getAssets());
+                PhysicsService.add(new RectanglePhysicsObject(100.f, 1.f, 0.f).move(0.f, -20.f));
+                PhysicsService.add(new RectanglePhysicsObject(5.f, 5.f, 1.f)
+                        .move(-40.f, 0.f)
+                        .setVel(10.f, 0.f));
+
+                for (int i = 0; i < 4; i++) {
+                    PhysicsService.add(new RectanglePhysicsObject(1.f, 10.f, 1.f)
+                            .move(5.f, -14.5f + 11 * i));
+                    PhysicsService.add(new RectanglePhysicsObject(1.f, 10.f, 1.f)
+                            .move(15.f, -14.5f + 11 * i));
+                    PhysicsService.add(new RectanglePhysicsObject(12.f, 1.f, 1.f)
+                            .move(10.f, -9.f + 11 * i));
+                }
+
+                GameEngine.init(getAssets());
             }
         });
         setContentView(glSurfaceView);
@@ -60,9 +73,10 @@ public class AccelerometerGraphActivity extends Activity {
         Thread physicsThread = new Thread(new Runnable() {
             @Override
             public void run() {
+                PhysicsService.start();
                 while (true) {
                     long time = System.currentTimeMillis();
-                    AccelerometerGraphJNI.pause();
+                    PhysicsService.nextFrame();
                     System.out.println("time physics " + (System.currentTimeMillis() - time));
                     try {
 
@@ -88,7 +102,6 @@ public class AccelerometerGraphActivity extends Activity {
         glSurfaceView.queueEvent(new Runnable() {
             @Override
             public void run() {
-                AccelerometerGraphJNI.pause();
             }
         });
     }
@@ -100,7 +113,6 @@ public class AccelerometerGraphActivity extends Activity {
         glSurfaceView.queueEvent(new Runnable() {
             @Override
             public void run() {
-                AccelerometerGraphJNI.resume();
             }
         });
     }

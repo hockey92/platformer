@@ -20,7 +20,7 @@ package com.android.game;
 
 import android.content.res.AssetManager;
 
-public class AccelerometerGraphJNI {
+public class GameEngine {
 
      static {
          System.loadLibrary("accelerometergraph");
@@ -30,6 +30,4 @@ public class AccelerometerGraphJNI {
      public static native void surfaceCreated();
      public static native void surfaceChanged(int width, int height);
      public static native void drawFrame();
-     public static native void pause();
-     public static native void resume();
 }
