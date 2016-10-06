@@ -30,7 +30,8 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-        glSurfaceView = new GLSurfaceView(getApplication());
+        World.getInstance().setMan(new Man());
+        glSurfaceView = new MyGLSurfaceView(getApplication(), getWindowManager());
         glSurfaceView.setEGLContextClientVersion(2);
         glSurfaceView.setRenderer(new GLSurfaceView.Renderer() {
             @Override
@@ -51,48 +52,36 @@ public class MainActivity extends Activity {
         glSurfaceView.queueEvent(new Runnable() {
             @Override
             public void run() {
-                PhysicsService.add(new RectanglePhysicsObject(100.f, 1.f, 0.f).move(0.f, -20.f));
-                PhysicsService.add(new RectanglePhysicsObject(5.f, 5.f, 1.f)
-                        .move(-40.f, 0.f)
-                        .setVel(10.f, 0.f));
 
-                for (int i = 0; i < 4; i++) {
-                    PhysicsService.add(new RectanglePhysicsObject(1.f, 10.f, 1.f)
-                            .move(5.f, -14.5f + 11 * i));
-                    PhysicsService.add(new RectanglePhysicsObject(1.f, 10.f, 1.f)
-                            .move(15.f, -14.5f + 11 * i));
-                    PhysicsService.add(new RectanglePhysicsObject(12.f, 1.f, 1.f)
-                            .move(10.f, -9.f + 11 * i));
-                }
+                Thread physicsThread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        PhysicsService.start();
+                        while (true) {
+                            long time = System.currentTimeMillis();
+//                            System.out.println("time physics " + (System.currentTimeMillis() - time));
+                            try {
+
+                                PhysicsService.nextFrame();
+
+                                long timeToWait = 1000 / 60 - (System.currentTimeMillis() - time);
+
+//                                System.out.println("time to wait " + timeToWait);
+
+                                Thread.sleep(timeToWait <= 0 ? 2 : timeToWait);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                });
+                physicsThread.setDaemon(true);
+                physicsThread.start();
 
                 GameEngine.init(getAssets());
             }
         });
         setContentView(glSurfaceView);
-
-        Thread physicsThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                PhysicsService.start();
-                while (true) {
-                    long time = System.currentTimeMillis();
-                    PhysicsService.nextFrame();
-                    System.out.println("time physics " + (System.currentTimeMillis() - time));
-                    try {
-
-                        long timeToWait = 20 - (System.currentTimeMillis() - time);
-
-                        System.out.println("time to wait " + timeToWait);
-
-                        Thread.sleep(timeToWait <= 0 ? 2 : timeToWait);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-        physicsThread.setDaemon(true);
-        physicsThread.start();
     }
 
     @Override

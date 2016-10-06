@@ -18,7 +18,7 @@ void Constraint::fix() {
     j = ImpulseFactory::createImpulse(o1, o2, c, true);
     oldImpulse = tangentTotalImpulse;
     tangentTotalImpulse = clamp(oldImpulse + j,
-                                -0.3f * normalTotalImpulse, 0.3f * normalTotalImpulse);
+                                -0.2f * normalTotalImpulse, 0.2f * normalTotalImpulse);
     j = tangentTotalImpulse - oldImpulse;
     o1->applyImpulse(-j * o1->getInvM() * c->t(),
                      -j * o1->getInvI() * Vec2::cross(c->r1(), c->t()));

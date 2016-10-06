@@ -2,6 +2,7 @@
 #define TEAPOT_VEC2_H
 
 #include <math.h>
+#include <string>
 
 class Vec2 {
 
@@ -54,8 +55,14 @@ public:
         return Vec2(-v1 * v2.values[1], v1 * v2.values[0]);
     }
 
+    std::string toString();
+
+    void clamp(const Vec2&v);
+
 private:
     float values[2];
+
+    std::string floatToStr(float value);
 };
 
 Vec2 operator+(Vec2 v1, const Vec2 &v2);

@@ -10,7 +10,7 @@ float ImpulseFactory::createImpulse(const PhysicsObject *o1, const PhysicsObject
     Vec2 v2 = o2->getVel() + (Vec2::cross(o2->getAngleVel(), c->r2()));
 
     float vrn = Vec2::dot(v2 - v1, n);
-    if (!isTangent) vrn -= 0.2f * fmax(c->depth() - 0.01f, 0.0f) / DT;
+    if (!isTangent) vrn -= 0.1 * fmax(c->depth() - 0.01f, 0.0f) / DT;
 
     return -1.f * vrn / (o1->getInvM() + o2->getInvM() +
                          Vec2::dot(o1->getInvI() * Vec2::cross(Vec2::cross(c->r1(), n), c->r1()) +

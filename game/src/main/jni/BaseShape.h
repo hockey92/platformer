@@ -11,6 +11,8 @@ public:
 
     virtual ~BaseShape();
 
+    void update();
+
     virtual void move(const Vec2 &coords);
 
     void rotate(const float angle);
@@ -41,6 +43,14 @@ public:
 
     virtual int verticesSize() { return -1; }
 
+    float getZ();
+
+    void setZ(float z);
+
+    virtual void draw(float *mvp) const { }
+
+    void setAngle(float angle);
+
 protected:
     Vec2 center;
     int realChildCount;
@@ -49,10 +59,11 @@ protected:
     BaseShape *parent;
     AABB *aabb;
     AABB *extendedAABB;
+    float z;
 
     virtual void innerRotate(float angle);
 
-    void setAngle(float angle);
+    virtual void innerUpdate() { }
 };
 
 #endif //TEAPOT_BASESHAPE_H

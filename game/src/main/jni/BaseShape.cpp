@@ -1,7 +1,8 @@
 #include "BaseShape.h"
 #include "ShapeTypes.h"
 
-BaseShape::BaseShape() : realChildCount(0), parent(NULL), angle(0.f), aabb(NULL), extendedAABB(NULL) {
+BaseShape::BaseShape() : realChildCount(0), parent(NULL), angle(0.f),
+                         aabb(NULL), extendedAABB(NULL), z(0) {
 }
 
 void BaseShape::move(const Vec2 &coords) {
@@ -99,4 +100,19 @@ unsigned int BaseShape::type() const {
 
 AABB *BaseShape::getAABB() {
     return aabb;
+}
+
+float BaseShape::getZ() {
+    return z;
+}
+
+void BaseShape::setZ(float z) {
+    this->z = z;
+}
+
+void BaseShape::update() {
+    for (int i = 0; i < realChildCount; i++) {
+        children[i]->innerUpdate();
+    }
+    innerUpdate();
 }

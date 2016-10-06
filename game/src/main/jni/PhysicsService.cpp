@@ -21,7 +21,7 @@ void PhysicsService::nextFrame() {
             continue;
         }
         po->update();
-        po->applyGravity();
+        po->applyForce();
     }
 
     for (int i = 0; i < physicsObjects.size(); i++) {
@@ -49,8 +49,12 @@ void PhysicsService::nextFrame() {
                         collisionInfo->clean();
                         continue;
                     }
+
                     std::vector<Collision *> collisions = CollisionFactory::createCollision(
-                            (PolygonShape *) shape1, (PolygonShape *) shape2);
+                            (PolygonShape *) shape1,
+                            (PolygonShape *) shape2
+                    );
+
                     if (!collisions.empty()) {
                         collisionInfo->addConstraints(collisions);
                     } else {
@@ -68,7 +72,7 @@ void PhysicsService::nextFrame() {
         collisionsToFix[i]->applyWarmStarting();
     }
 
-    for (int iteration = 0; iteration < 5; iteration++) {
+    for (int iteration = 0; iteration < 10; iteration++) {
         for (int i = 0; i < collisionsToFix.size(); i++) {
             collisionsToFix[i]->fix();
         }
@@ -100,10 +104,4 @@ PhysicsService::~PhysicsService() {
 void PhysicsService::addPhysicsObject(PhysicsObject *physicsObject) {
     physicsObject->getShape()->calculateAABB();
     physicsObjects.push_back(physicsObject);
-}
-
-void PhysicsService::draw(float *mvp) {
-    for (int i = 0; i < physicsObjects.size(); i++) {
-        ((PolygonShape *) physicsObjects[i]->getShape())->draw(mvp);
-    }
 }

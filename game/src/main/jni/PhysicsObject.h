@@ -11,7 +11,7 @@ class PhysicsObject {
 public:
     PhysicsObject(BaseShape *shape, float invM);
 
-    PhysicsObject* move(const Vec2& dPos);
+    PhysicsObject *move(const Vec2 &dPos);
 
     virtual ~PhysicsObject();
 
@@ -19,7 +19,7 @@ public:
 
     virtual void updatePos();
 
-    void applyGravity();
+    void applyForce();
 
     Vec2 getVel() const { return vel; }
 
@@ -27,11 +27,25 @@ public:
 
     void setVel(const Vec2 &vel) { this->vel = vel; }
 
-    void setAngleVel(float angleVel) { this->angleVel = angleVel; }
+    void setAcceleration(const Vec2 &acceleration) {
+        this->acceleration = acceleration;
+    }
 
-    float getInvM() const { return invM; }
+    void setVelThreshold(const Vec2& velThreshold) {
+        this->velThreshold = velThreshold;
+    }
 
-    float getInvI() const { return invI; }
+    void setAngleVel(float angleVel) {
+        this->angleVel = angleVel;
+    }
+
+    float getInvM() const {
+        return invM;
+    }
+
+    float getInvI() const {
+        return invI;
+    }
 
     void applyImpulse(const Vec2 &dVel, float dAngleVel) {
         if (invM > 0) {
@@ -69,6 +83,8 @@ protected:
 
 private:
     Vec2 vel;
+    Vec2 acceleration;
+    Vec2 velThreshold;
     float angleVel;
     BaseShape *shape;
     float invM;

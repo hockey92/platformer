@@ -7,7 +7,7 @@
 #include "BaseShape.h"
 #include "Constraint.h"
 #include "IThread.h"
-#include "MapWrapper.h"
+#include "Map.h"
 #include "CollisionInfo.h"
 #include "CollisionInfo.h"
 
