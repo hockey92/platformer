@@ -11,12 +11,9 @@
 
 class Joint : public BaseShape {
 public:
-    Joint(BaseShape* parent,
-          PolarCoords parentPolarCoords,
-          BaseShape* child,
-          PolarCoords childPolarCoords);
+    Joint(PolarCoords parentPolarCoords, PolarCoords childPolarCoords);
 
-    void setAngleBetweenPArentAndChild(float angleBetweenParentAndChild) {
+    void setAngleBetweenParentAndChild(float angleBetweenParentAndChild) {
         this->angleBetweenParentAndChild = angleBetweenParentAndChild;
     }
 
@@ -25,16 +22,12 @@ public:
     }
 
 private:
-    BaseShape *child;
-    BaseShape *parent;
-
     PolarCoords parentPolarCoords;
     PolarCoords childPolarCoords;
 
     float angleBetweenParentAndChild;
 
     virtual void innerUpdate();
-
 };
 
 #endif //PLATFORMER_JOINT_H

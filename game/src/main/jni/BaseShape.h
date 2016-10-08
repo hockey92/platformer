@@ -55,11 +55,15 @@ protected:
     Vec2 center;
     int realChildCount;
     float angle;
-    BaseShape **children;
+    BaseShape *children[20];
     BaseShape *parent;
     AABB *aabb;
     AABB *extendedAABB;
     float z;
+
+    void setParent(BaseShape *parent) { this->parent = parent; }
+
+    void addChildren(BaseShape *baseShape);
 
     virtual void innerRotate(float angle);
 

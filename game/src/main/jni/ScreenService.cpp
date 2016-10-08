@@ -5,25 +5,8 @@
 #include <GLES2/gl2.h>
 #include "ScreenService.h"
 #include "Shaders.h"
-#include "RectanglePhysicsObject.h"
-#include "Joint.h"
 
 ScreenService::ScreenService() {
-    child = (new RectanglePhysicsObject(2, 0.5f, 0))->getShape();
-    parent = (new RectanglePhysicsObject(2, 0.5f, 0))->getShape();
-
-    parent->rotate(PI /4);
-    parent->move(Vec2(1, 1));
-
-    add(child);
-    add(parent);
-
-    joint = new Joint(parent,
-                             PolarCoords(0, 1),
-                             child,
-                             PolarCoords(PI, 1));
-    joint->setAngleBetweenPArentAndChild(PI - 0.5f);
-    joint->update();
 }
 
 
@@ -36,12 +19,6 @@ void ScreenService::add(BaseShape *shape) {
 }
 
 void ScreenService::draw() {
-
-    parent->rotate(0.01f);
-
-    joint->setAngleBetweenPArentAndChild(joint->getAngleBetweenParentAndChild() + 0.01f);
-    joint->update();
-
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
     Iterator<float, std::vector<BaseShape *> > it = shapesMap.getIterator();

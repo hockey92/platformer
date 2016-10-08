@@ -7,6 +7,7 @@
 #include "PhysicsService.h"
 #include "RectanglePhysicsObject.h"
 #include "ScreenService.h"
+#include "PolygonShape.h"
 
 #define  LOG_TAG    "accelerometergraph"
 #define  LOGI(...)  __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)
@@ -16,6 +17,11 @@ void *objects[500];
 
 PhysicsService physicsService;
 ScreenService screenService;
+
+JNIEXPORT void JNICALL
+Java_com_android_game_Shape_move(JNIEnv *env, jclass type, jint id, jfloat x, jfloat y) {
+
+}
 
 extern "C" {
 JNIEXPORT void JNICALL
@@ -62,8 +68,25 @@ Java_com_android_game_RectanglePO_createCube(JNIEnv *env, jclass type,
 }
 
 JNIEXPORT jint JNICALL
-Java_com_android_game_Shape_createShape(JNIEnv *env, jclass type, jobjectArray arr) {
+Java_com_android_game_Join_createJoin(JNIEnv *env, jclass type,
+                                      jfloat parentAngle, jfloat parentR,
+                                      jfloat childAngle, jfloat childR) {
+    objects[nextObjectNumber] = new Joint(PolarCoords(parentAngle, parentR),
+                                          PolarCoords(childAngle, childR));
+    return nextObjectNumber++;
+}
 
+JNIEXPORT jint JNICALL
+Java_com_android_game_PolygonShape_createPolygon(JNIEnv *env, jclass type, jfloatArray arr) {
+    jsize size = env->GetArrayLength(arr);
+    jfloat *verticesArray = env->GetFloatArrayElements(arr, 0);
+    Vec2 *vertices = new Vec2[size / 2];
+    for (int i = 0; i < size / 2; i++) {
+        vertices[i] = Vec2(verticesArray[i * 2], verticesArray[i * 2 + 1]);
+    }
+    objects[nextObjectNumber] = new PolygonShape(vertices, size / 2);
+    env->ReleaseFloatArrayElements(arr, verticesArray, 0);
+    return nextObjectNumber++;
 }
 
 JNIEXPORT void JNICALL
@@ -100,8 +123,13 @@ Java_com_android_game_PhysicsObject_getVel(JNIEnv *env, jclass type, jint id) {
 
 JNIEXPORT void JNICALL
 Java_com_android_game_PhysicsService_add(JNIEnv *env, jclass type, jint id) {
-    physicsService.addPhysicsObject((PhysicsObject*) objects[id]);
-    screenService.add(((PhysicsObject*) objects[id])->getShape());
+    physicsService.addPhysicsObject((PhysicsObject *) objects[id]);
+    screenService.add(((PhysicsObject *) objects[id])->getShape());
+}
+
+JNIEXPORT void JNICALL
+Java_com_android_game_ScreenService_add(JNIEnv *env, jclass type, jint id) {
+    screenService.add((BaseShape *) objects[id]);
 }
 
 }

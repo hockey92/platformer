@@ -29,6 +29,26 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle icicle) {
+
+        float[] vertices = {
+                0.5f, 0.5f,
+                -0.5f, 0.5f,
+                -0.5f, -0.5f,
+                0.5f, -0.5f
+        };
+        PolygonShape polygonShape = new PolygonShape(vertices);
+
+        float[] vertices1 = {
+                1.0f, 1.0f,
+                0.5f, 1.f,
+                0.5f, 0.5f,
+                1.0f, 0.6f
+        };
+        PolygonShape polygonShape1 = new PolygonShape(vertices1);
+
+        ScreenService.add(polygonShape);
+        ScreenService.add(polygonShape1);
+
         super.onCreate(icicle);
         World.getInstance().setMan(new Man());
         glSurfaceView = new MyGLSurfaceView(getApplication(), getWindowManager());

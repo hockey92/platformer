@@ -9,9 +9,5 @@ public class RectanglePO extends PhysicsObject {
         super(createCube(w, h, invM));
     }
 
-    static {
-        System.loadLibrary("accelerometergraph");
-    }
-
     private static native int createCube(float w, float h, float invM);
 }

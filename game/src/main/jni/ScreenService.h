@@ -25,12 +25,8 @@ public:
 private:
     Map<float, std::vector<BaseShape *> > shapesMap;
     float mvp[16];
+
     Vec2 physicalScreenSize;
-
-    BaseShape* child;
-    BaseShape* parent;
-
-    Joint *joint;
 };
 
 #endif //PLATFORMER_SCREENSERVICE_H

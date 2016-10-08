@@ -116,3 +116,8 @@ void BaseShape::update() {
     }
     innerUpdate();
 }
+
+void BaseShape::addChildren(BaseShape *baseShape) {
+    children[realChildCount++] = baseShape;
+    baseShape->setParent(parent);
+}
