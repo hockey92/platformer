@@ -18,11 +18,6 @@ void *objects[500];
 PhysicsService physicsService;
 ScreenService screenService;
 
-JNIEXPORT void JNICALL
-Java_com_android_game_Shape_move(JNIEnv *env, jclass type, jint id, jfloat x, jfloat y) {
-
-}
-
 extern "C" {
 JNIEXPORT void JNICALL
 Java_com_android_game_GameEngine_init(JNIEnv *env, jclass type, jobject assetManager) {
@@ -68,9 +63,9 @@ Java_com_android_game_RectanglePO_createCube(JNIEnv *env, jclass type,
 }
 
 JNIEXPORT jint JNICALL
-Java_com_android_game_Join_createJoin(JNIEnv *env, jclass type,
-                                      jfloat parentAngle, jfloat parentR,
-                                      jfloat childAngle, jfloat childR) {
+Java_com_android_game_Joint_createJoint(JNIEnv *env, jclass type,
+                                        jfloat parentAngle, jfloat parentR,
+                                        jfloat childAngle, jfloat childR) {
     objects[nextObjectNumber] = new Joint(PolarCoords(parentAngle, parentR),
                                           PolarCoords(childAngle, childR));
     return nextObjectNumber++;
@@ -96,6 +91,24 @@ Java_com_android_game_PhysicsObject_move(JNIEnv *env, jclass type,
 }
 
 JNIEXPORT void JNICALL
+Java_com_android_game_Shape_addChildren(JNIEnv *env, jclass type,
+                                        jint id, jint childrenId) {
+    ((BaseShape *) objects[id])->addChildren((BaseShape *) objects[childrenId]);
+}
+
+JNIEXPORT void JNICALL
+Java_com_android_game_Shape_update(JNIEnv *env, jclass type, jint id) {
+    ((BaseShape *) objects[id])->update();
+}
+
+JNIEXPORT void JNICALL
+Java_com_android_game_Shape_setAngle(JNIEnv *env, jclass type, jint id, jfloat angle) {
+    ((BaseShape *) objects[id])->setAngle(angle);
+    ((BaseShape *) objects[id])->rotate(0);
+}
+
+
+JNIEXPORT void JNICALL
 Java_com_android_game_PhysicsObject_setVel(JNIEnv *env, jclass type,
                                            jint id, jfloat vx, jfloat vy) {
     ((PhysicsObject *) objects[id])->setVel(Vec2(vx, vy));
@@ -119,6 +132,11 @@ Java_com_android_game_PhysicsObject_getVel(JNIEnv *env, jclass type, jint id) {
     jclass cls = env->FindClass("com/android/game/Vec2");
     jmethodID methodID = env->GetMethodID(cls, "<init>", "(FF)V");
     return env->NewObject(cls, methodID, vel.x(), vel.y());
+}
+
+JNIEXPORT void JNICALL
+Java_com_android_game_Shape_move(JNIEnv *env, jclass type, jint id, jfloat x, jfloat y) {
+    ((BaseShape *) objects[id])->move(Vec2(x, y));
 }
 
 JNIEXPORT void JNICALL

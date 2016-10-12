@@ -18,9 +18,6 @@ void BaseShape::move(const Vec2 &coords) {
 }
 
 Vec2 BaseShape::getCenter() const {
-    if (parent != NULL) {
-        return parent->getCenter();
-    }
     return center;
 }
 
@@ -32,9 +29,6 @@ BaseShape *BaseShape::getChildren(int i) {
 }
 
 void BaseShape::rotate(const float angle) {
-    for (int i = 0; i < realChildCount; i++) {
-        getChildren(i)->rotate(angle);
-    }
     innerRotate(angle);
 }
 
@@ -43,9 +37,6 @@ void BaseShape::innerRotate(float angle) {
 }
 
 float BaseShape::getAngel() const {
-    if (parent != NULL) {
-        return parent->getAngel();
-    }
     return angle;
 }
 
@@ -111,13 +102,13 @@ void BaseShape::setZ(float z) {
 }
 
 void BaseShape::update() {
-    for (int i = 0; i < realChildCount; i++) {
-        children[i]->innerUpdate();
-    }
     innerUpdate();
+    for (int i = 0; i < realChildCount; i++) {
+        children[i]->update();
+    }
 }
 
 void BaseShape::addChildren(BaseShape *baseShape) {
     children[realChildCount++] = baseShape;
-    baseShape->setParent(parent);
+    baseShape->setParent(this);
 }

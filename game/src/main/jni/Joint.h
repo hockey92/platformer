@@ -13,14 +13,6 @@ class Joint : public BaseShape {
 public:
     Joint(PolarCoords parentPolarCoords, PolarCoords childPolarCoords);
 
-    void setAngleBetweenParentAndChild(float angleBetweenParentAndChild) {
-        this->angleBetweenParentAndChild = angleBetweenParentAndChild;
-    }
-
-    float getAngleBetweenParentAndChild() {
-        return angleBetweenParentAndChild;
-    }
-
 private:
     PolarCoords parentPolarCoords;
     PolarCoords childPolarCoords;

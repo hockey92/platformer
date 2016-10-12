@@ -31,23 +31,30 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle icicle) {
 
         float[] vertices = {
-                0.5f, 0.5f,
-                -0.5f, 0.5f,
-                -0.5f, -0.5f,
-                0.5f, -0.5f
+                0.1f, 0.2f,
+                -0.1f, 0.2f,
+                -0.1f, -0.2f,
+                0.1f, -0.2f
         };
-        PolygonShape polygonShape = new PolygonShape(vertices);
 
-        float[] vertices1 = {
-                1.0f, 1.0f,
-                0.5f, 1.f,
-                0.5f, 0.5f,
-                1.0f, 0.6f
-        };
-        PolygonShape polygonShape1 = new PolygonShape(vertices1);
+        PolygonShape main;
+        PolygonShape prev = main = new PolygonShape(vertices);
+        ScreenService.add(prev);
 
-        ScreenService.add(polygonShape);
-        ScreenService.add(polygonShape1);
+        for (int i = 0; i < 49; i++) {
+            PolygonShape next = new PolygonShape(vertices);
+            ScreenService.add(next);
+            Joint joint = new Joint(3.14f / 2.0f, 0.2f, -3.14f / 2.0f, 0.2f);
+            joint.setAngle(((i % 4 == 0) ? 1 : -1) * (3.14f - 0.2f));
+            prev.addChildren(joint);
+            joint.addChildren(next);
+            prev = next;
+        }
+
+//        main.move(-8.0f, -4.0f);
+        main.setAngle(0.4f);
+
+        main.update();
 
         super.onCreate(icicle);
         World.getInstance().setMan(new Man());
@@ -111,6 +118,7 @@ public class MainActivity extends Activity {
         glSurfaceView.queueEvent(new Runnable() {
             @Override
             public void run() {
+
             }
         });
     }
@@ -122,6 +130,7 @@ public class MainActivity extends Activity {
         glSurfaceView.queueEvent(new Runnable() {
             @Override
             public void run() {
+
             }
         });
     }
