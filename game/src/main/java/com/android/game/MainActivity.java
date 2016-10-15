@@ -20,6 +20,9 @@ import android.app.Activity;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
@@ -27,37 +30,23 @@ public class MainActivity extends Activity {
 
     GLSurfaceView glSurfaceView;
 
+    Animation animation;
+    Shape shape;
+
     @Override
     protected void onCreate(Bundle icicle) {
 
-        float[] vertices = {
-                0.1f, 0.2f,
-                -0.1f, 0.2f,
-                -0.1f, -0.2f,
-                0.1f, -0.2f
-        };
+        String json = loadJSONFromAsset("man.json");
+        String runAnimationJson = loadJSONFromAsset("runAnimation.json");
 
-        PolygonShape main;
-        PolygonShape prev = main = new PolygonShape(vertices);
-        ScreenService.add(prev);
+        shape = ShapeFactory.createShapeFromJson(json);
+        animation = new Animation(shape, runAnimationJson);
 
-        for (int i = 0; i < 49; i++) {
-            PolygonShape next = new PolygonShape(vertices);
-            ScreenService.add(next);
-            Joint joint = new Joint(3.14f / 2.0f, 0.2f, -3.14f / 2.0f, 0.2f);
-            joint.setAngle(((i % 4 == 0) ? 1 : -1) * (3.14f - 0.2f));
-            prev.addChildren(joint);
-            joint.addChildren(next);
-            prev = next;
-        }
-
-//        main.move(-8.0f, -4.0f);
-        main.setAngle(0.4f);
-
-        main.update();
+        shape.setAngle(3.14f / 2.0f - 0.1f);
+        shape.move(40, 0);
+//        shape.update();
 
         super.onCreate(icicle);
-        World.getInstance().setMan(new Man());
         glSurfaceView = new MyGLSurfaceView(getApplication(), getWindowManager());
         glSurfaceView.setEGLContextClientVersion(2);
         glSurfaceView.setRenderer(new GLSurfaceView.Renderer() {
@@ -89,13 +78,19 @@ public class MainActivity extends Activity {
 //                            System.out.println("time physics " + (System.currentTimeMillis() - time));
                             try {
 
-                                PhysicsService.nextFrame();
+                                animation.nextFrame();
+                                shape.move(-0.5f, 0.0f);
+                                shape.update();
+
+//                                PhysicsService.nextFrame();
 
                                 long timeToWait = 1000 / 60 - (System.currentTimeMillis() - time);
 
 //                                System.out.println("time to wait " + timeToWait);
 
-                                Thread.sleep(timeToWait <= 0 ? 2 : timeToWait);
+//                                Thread.sleep(timeToWait <= 0 ? 2 : timeToWait);
+
+                                Thread.sleep(50);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
@@ -133,5 +128,21 @@ public class MainActivity extends Activity {
 
             }
         });
+    }
+
+    public String loadJSONFromAsset(String fileName) {
+        String json;
+        try {
+            InputStream is = getAssets().open(fileName);
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
     }
 }

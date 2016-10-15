@@ -1,10 +1,16 @@
 package com.android.game;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by qwerty on 01.10.16.
  */
 public class Shape {
+
     private int id;
+    private String name;
+    private List<Shape> children = new ArrayList<>();
 
     protected Shape(int id) {
         this.id = id;
@@ -19,8 +25,13 @@ public class Shape {
         return this;
     }
 
-    public void addChildren(Shape shape) {
-        addChildren(id, shape.id);
+    public void addChild(Shape shape) {
+        addChild(id, shape.id);
+        children.add(shape);
+    }
+
+    public List<Shape> getChildren() {
+        return children;
     }
 
     public void update() {
@@ -31,13 +42,21 @@ public class Shape {
         setAngle(id, angle);
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
     static {
         System.loadLibrary("accelerometergraph");
     }
 
     private static native void move(int id, float x, float y);
 
-    private static native void addChildren(int id, int childId);
+    private static native void addChild(int id, int childId);
 
     private static native void update(int id);
 

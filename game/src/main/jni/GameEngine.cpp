@@ -91,9 +91,9 @@ Java_com_android_game_PhysicsObject_move(JNIEnv *env, jclass type,
 }
 
 JNIEXPORT void JNICALL
-Java_com_android_game_Shape_addChildren(JNIEnv *env, jclass type,
-                                        jint id, jint childrenId) {
-    ((BaseShape *) objects[id])->addChildren((BaseShape *) objects[childrenId]);
+Java_com_android_game_Shape_addChild__II(JNIEnv *env, jclass type,
+                                         jint id, jint childrenId) {
+    ((BaseShape *) objects[id])->addChild((BaseShape *) objects[childrenId]);
 }
 
 JNIEXPORT void JNICALL

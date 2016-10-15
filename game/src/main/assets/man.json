@@ -1,0 +1,151 @@
+{
+  "shape": {
+    "type": "RECTANGLE",
+    "w": "1.2",
+    "h": "0.4",
+    "children": [
+      {
+        "joint": {
+          "name": "hip1",
+          "parentR": "0.64",
+          "parentAngle": "0",
+          "childR": "0.44",
+          "childAngle": "3.14",
+          "angle": "3.14"
+        },
+        "shape": {
+          "type": "RECTANGLE",
+          "w": "0.8",
+          "h": "0.2",
+          "children": [
+            {
+              "joint": {
+                "name": "knee1",
+                "parentR": "0.44",
+                "parentAngle": "0",
+                "childR": "0.44",
+                "childAngle": "3.14",
+                "angle": "3.14"
+              },
+              "shape": {
+                "type": "RECTANGLE",
+                "w": "0.8",
+                "h": "0.2"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "joint": {
+          "name": "hip2",
+          "parentR": "0.64",
+          "parentAngle": "0",
+          "childR": "0.44",
+          "childAngle": "3.14",
+          "angle": "3.14"
+        },
+        "shape": {
+          "type": "RECTANGLE",
+          "w": "0.8",
+          "h": "0.2",
+          "children": [
+            {
+              "joint": {
+                "name": "knee2",
+                "parentR": "0.44",
+                "parentAngle": "0",
+                "childR": "0.44",
+                "childAngle": "3.14",
+                "angle": "3.14"
+              },
+              "shape": {
+                "type": "RECTANGLE",
+                "w": "0.8",
+                "h": "0.2"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "joint": {
+          "name": "shoulder1",
+          "parentR": "0.56",
+          "parentAngle": "3.14",
+          "childR": "0.44",
+          "childAngle": "3.14",
+          "angle": "0"
+        },
+        "shape": {
+          "type": "RECTANGLE",
+          "w": "0.8",
+          "h": "0.2",
+          "children": [
+            {
+              "joint": {
+                "name": "elbow1",
+                "parentR": "0.44",
+                "parentAngle": "0",
+                "childR": "0.44",
+                "childAngle": "3.14",
+                "angle": "3.14"
+              },
+              "shape": {
+                "type": "RECTANGLE",
+                "w": "0.8",
+                "h": "0.2"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "joint": {
+          "name": "shoulder2",
+          "parentR": "0.56",
+          "parentAngle": "3.14",
+          "childR": "0.44",
+          "childAngle": "3.14",
+          "angle": "0"
+        },
+        "shape": {
+          "type": "RECTANGLE",
+          "w": "0.8",
+          "h": "0.2",
+          "children": [
+            {
+              "joint": {
+                "name": "elbow2",
+                "parentR": "0.44",
+                "parentAngle": "0",
+                "childR": "0.44",
+                "childAngle": "3.14",
+                "angle": "3.14"
+              },
+              "shape": {
+                "type": "RECTANGLE",
+                "w": "0.8",
+                "h": "0.2"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "joint": {
+          "parentR": "0.64",
+          "parentAngle": "3.14",
+          "childR": "0.24",
+          "childAngle": "0",
+          "angle": "3.14"
+        },
+        "shape": {
+          "type": "RECTANGLE",
+          "w": "0.4",
+          "h": "0.4"
+        }
+      }
+    ]
+  }
+}

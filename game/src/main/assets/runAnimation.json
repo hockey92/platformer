@@ -1,0 +1,54 @@
+[
+  {
+    "frameNumber": "0",
+    "angles": {
+      "shoulder1": "1",
+      "shoulder2": "-1",
+      "elbow1": "5.14",
+      "elbow2": "4.14",
+      "hip1": "2.8",
+      "hip2": "-1.5",
+      "knee1": "3.14",
+      "knee2": "1"
+    }
+  },
+  {
+    "frameNumber": "1",
+    "angles": {
+      "shoulder1": "0",
+      "shoulder2": "0",
+      "elbow1": "4.14",
+      "elbow2": "4.14",
+      "hip1": "2.3",
+      "hip2": "-2.8",
+      "knee1": "2",
+      "knee2": "3.14"
+    }
+  },
+  {
+    "frameNumber": "2",
+    "angles": {
+      "shoulder1": "-1",
+      "shoulder2": "1",
+      "elbow1": "4.14",
+      "elbow2": "5.14",
+      "hip1": "4.78",
+      "hip2": "-3.48",
+      "knee1": "1",
+      "knee2": "3.14"
+    }
+  },
+  {
+    "frameNumber": "3",
+    "angles": {
+      "shoulder1": "0",
+      "shoulder2": "0",
+      "elbow1": "4.14",
+      "elbow2": "4.14",
+      "hip1": "3.48",
+      "hip2": "-3.98",
+      "knee1": "3.14",
+      "knee2": "2"
+    }
+  }
+]

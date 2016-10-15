@@ -108,7 +108,7 @@ void BaseShape::update() {
     }
 }
 
-void BaseShape::addChildren(BaseShape *baseShape) {
+void BaseShape::addChild(BaseShape *baseShape) {
     children[realChildCount++] = baseShape;
     baseShape->setParent(this);
 }

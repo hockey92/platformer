@@ -46,7 +46,7 @@ void PolygonShape::draw(float *mvp) const {
     vertexBuff->init();
 
     shader->beginRender(vertexBuff, verticesSize, 4);
-    shader->setColor(0.0f, 1.0f, 0.0f, 1.0f);
+    shader->setColor(1.0f, 1.0f, 1.0f, 1.0f);
     shader->setMVP((ndk_helper::Mat4(mvp) *
                     ndk_helper::Mat4::Translation(center.x(), center.y(), 0.0f) *
                     ndk_helper::Mat4::RotationZ(-angle)).Ptr());

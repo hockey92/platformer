@@ -51,7 +51,7 @@ public:
 
     void setAngle(float angle);
 
-    void addChildren(BaseShape *baseShape);
+    void addChild(BaseShape *baseShape);
 
 protected:
     Vec2 center;
