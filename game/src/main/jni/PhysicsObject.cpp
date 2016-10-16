@@ -5,14 +5,13 @@ unsigned int PhysicsObject::idCounter = 0;
 
 Mutex PhysicsObject::idMutex;
 
-PhysicsObject::PhysicsObject(BaseShape *shape, float invM) : angleVel(0), shape(shape), invM(invM),
-                                                             active(true), deleted(false),
-                                                             visible(true) {
+PhysicsObject::PhysicsObject(BaseShape *shape, float invM, float invI)
+        : angleVel(0), shape(shape), invM(invM), invI(invI),
+          active(true), deleted(false),
+          visible(true) {
     idMutex.lock();
     id = idCounter++;
     idMutex.unlock();
-
-    invI = invM > 0 ? 12.0f * invM / (4 * 4 + 4 * 4) : 0;
 }
 
 PhysicsObject::PhysicsObject() : angleVel(0), shape(NULL), invM(0),
@@ -34,7 +33,7 @@ void PhysicsObject::applyForce() {
     if (invM > 0.f) {
         vel += Vec2(0.0f, -9.8f) * DT;
         vel += acceleration * DT;
-        vel.clamp(Vec2(5, -1));
+        vel.clamp(Vec2(7, -1));
     }
 }
 

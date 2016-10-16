@@ -2,9 +2,19 @@ package com.android.game;
 
 public class PhysicsObject {
     private int id;
+    private Shape shape;
+
+    public PhysicsObject(Shape shape, float invM, float invI) {
+        this.id = createPhysicsObject(shape.getId(), invM, invI);
+        this.shape = shape;
+    }
 
     protected PhysicsObject(int id) {
         this.id = id;
+    }
+
+    public Shape getShape() {
+        return shape;
     }
 
     public int getId() {
@@ -41,4 +51,6 @@ public class PhysicsObject {
     private static native Object getVel(int id);
 
     private static native void setAcceleration(int id, float ax, float ay);
+
+    private static native int createPhysicsObject(int shapeId, float invM, float invI);
 }

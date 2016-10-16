@@ -9,7 +9,7 @@
 class PhysicsObject {
 
 public:
-    PhysicsObject(BaseShape *shape, float invM);
+    PhysicsObject(BaseShape *shape, float invM, float invI);
 
     PhysicsObject *move(const Vec2 &dPos);
 

@@ -6,8 +6,7 @@
 #include "ScreenService.h"
 #include "Shaders.h"
 
-ScreenService::ScreenService() {
-}
+ScreenService::ScreenService() { }
 
 
 void ScreenService::add(BaseShape *shape) {
@@ -53,5 +52,5 @@ void ScreenService::surfaceChanged(float w, float h) {
     mvp[0] = 1.0f;
     mvp[5] = rel;
     mvp[10] = 1.0f;
-    mvp[15] = 30.0f;
+    mvp[15] = 10.0f;
 }

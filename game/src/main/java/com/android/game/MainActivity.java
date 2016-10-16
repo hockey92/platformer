@@ -30,8 +30,7 @@ public class MainActivity extends Activity {
 
     GLSurfaceView glSurfaceView;
 
-    Animation animation;
-    Shape shape;
+    GameCharacter gameCharacter;
 
     @Override
     protected void onCreate(Bundle icicle) {
@@ -39,15 +38,28 @@ public class MainActivity extends Activity {
         String json = loadJSONFromAsset("man.json");
         String runAnimationJson = loadJSONFromAsset("runAnimation.json");
 
-        shape = ShapeFactory.createShapeFromJson(json);
-        animation = new Animation(shape, runAnimationJson);
-
-        shape.setAngle(3.14f / 2.0f - 0.1f);
-        shape.move(40, 0);
+//        shape.move(40, 0);
 //        shape.update();
 
+        PhysicsObject bottomLine = new PhysicsObject(ShapeFactory.createRectangle(100, 1).move(0, -5), 0, 0);
+        PhysicsService.add(bottomLine);
+        ScreenService.add(bottomLine.getShape());
+
+        PhysicsObject bottomLine2 = new PhysicsObject(ShapeFactory.createRectangle(1, 100).move(-7, 0), 0, 0);
+        PhysicsService.add(bottomLine2);
+        ScreenService.add(bottomLine2.getShape());
+
+        for (int i = 0; i < 10; i++) {
+            PhysicsObject physicsObject = PhysicsObjectsFactory.createRectangle(1f, 1f, 1.f);
+            physicsObject.getShape().move(0, i + 10);
+            PhysicsService.add(physicsObject);
+            ScreenService.add(physicsObject.getShape());
+        }
+
+        gameCharacter = new GameCharacter(json, runAnimationJson);
+
         super.onCreate(icicle);
-        glSurfaceView = new MyGLSurfaceView(getApplication(), getWindowManager());
+        glSurfaceView = new MyGLSurfaceView(getApplication(), getWindowManager(), gameCharacter);
         glSurfaceView.setEGLContextClientVersion(2);
         glSurfaceView.setRenderer(new GLSurfaceView.Renderer() {
             @Override
@@ -74,23 +86,21 @@ public class MainActivity extends Activity {
                     public void run() {
                         PhysicsService.start();
                         while (true) {
+
+                            gameCharacter.update();
+
                             long time = System.currentTimeMillis();
 //                            System.out.println("time physics " + (System.currentTimeMillis() - time));
                             try {
 
-                                animation.nextFrame();
-                                shape.move(-0.5f, 0.0f);
-                                shape.update();
 
-//                                PhysicsService.nextFrame();
+                                PhysicsService.nextFrame();
 
                                 long timeToWait = 1000 / 60 - (System.currentTimeMillis() - time);
 
-//                                System.out.println("time to wait " + timeToWait);
+                                System.out.println("time to wait " + timeToWait);
 
-//                                Thread.sleep(timeToWait <= 0 ? 2 : timeToWait);
-
-                                Thread.sleep(50);
+                                Thread.sleep(timeToWait <= 0 ? 2 : timeToWait);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }

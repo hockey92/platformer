@@ -25,6 +25,20 @@ public class Shape {
         return this;
     }
 
+    public Shape setCenter(float x, float y) {
+        setCenter(id, x, y);
+        return this;
+    }
+
+    public Shape setCenter(Vec2 v) {
+        setCenter(id, v.x, v.y);
+        return this;
+    }
+
+    public Vec2 getCenter() {
+        return (Vec2) getCenter(id);
+    }
+
     public void addChild(Shape shape) {
         addChild(id, shape.id);
         children.add(shape);
@@ -55,6 +69,10 @@ public class Shape {
     }
 
     private static native void move(int id, float x, float y);
+
+    private static native void setCenter(int id, float x, float y);
+
+    private static native Object getCenter(int id);
 
     private static native void addChild(int id, int childId);
 

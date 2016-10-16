@@ -63,13 +63,6 @@ Vec2 Vec2::rotate(float angle) const {
     );
 }
 
-std::string Vec2::toString() {
-    return "{\"first\":\""
-           + floatToStr(values[0])
-           + "\", \"second\":\""
-           + floatToStr(values[1]) + "\"}";
-}
-
 std::string Vec2::floatToStr(float value) {
     std::ostringstream os;
     os << value;

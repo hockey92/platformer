@@ -5,10 +5,6 @@ package com.android.game;
  */
 public class ScreenService {
 
-    public static void add(PhysicsObject physicsObject) {
-        add(physicsObject.getId());
-    }
-
     public static void add(Shape shape) {
         add(shape.getId());
     }

@@ -79,12 +79,12 @@ public class Man {
 
     public void stop() {
         Vec2 vel = po.getVel();
-        po.setAcceleration(0.0f, 0.0f).setVel(0.0f, vel.second);
+        po.setAcceleration(0.0f, 0.0f).setVel(0.0f, vel.y);
     }
 
     public void jump() {
         Vec2 vel = po.getVel();
-        po.setVel(vel.first, 7.0f);
+        po.setVel(vel.x, 7.0f);
     }
 
     public PhysicsObject getPO() {

@@ -5,15 +5,15 @@ package com.android.game;
  */
 public class PhysicsService {
 
+    public static void add(PhysicsObject physicsObject) {
+        add(physicsObject.getId());
+    }
+
     public static native void nextFrame();
 
     public static native void start();
 
     public static native void stop();
-
-    public static void add(PhysicsObject physicsObject) {
-        add(physicsObject.getId());
-    }
 
     static {
         System.loadLibrary("accelerometergraph");
