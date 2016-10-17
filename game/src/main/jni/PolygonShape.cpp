@@ -9,6 +9,9 @@
 #include "ShapeTypes.h"
 
 PolygonShape::PolygonShape(Vec2 *vertices, int verticesSize) {
+
+    isVertexBuffInited = false;
+
     this->initVertices = new Vec2[verticesSize];
     this->vertices = new Vec2[verticesSize];
     for (int i = 0; i < verticesSize; i++) {
@@ -40,10 +43,13 @@ Vec2 *PolygonShape::getVertices() const {
     return vertices;
 }
 
-void PolygonShape::draw(float *mvp) const {
+void PolygonShape::draw(float *mvp) {
     Shader *shader = Shaders::getSimpleShader();
 
-    vertexBuff->init();
+    if (!isVertexBuffInited) {
+        vertexBuff->init();
+        isVertexBuffInited = true;
+    }
 
     shader->beginRender(vertexBuff, verticesSize, 4);
     shader->setColor(1.0f, 1.0f, 1.0f, 1.0f);

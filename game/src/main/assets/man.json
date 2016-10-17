@@ -2,7 +2,7 @@
   "shape": {
     "type": "RECTANGLE",
     "w": "0.6",
-    "h": "0.2",
+    "h": "0.1",
     "children": [
       {
         "joint": {

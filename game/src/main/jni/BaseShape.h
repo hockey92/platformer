@@ -47,7 +47,7 @@ public:
 
     void setZ(float z);
 
-    virtual void draw(float *mvp) const { }
+    virtual void draw(float *mvp) { }
 
     void setAngle(float angle);
 

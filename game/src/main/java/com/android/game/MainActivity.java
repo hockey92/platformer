@@ -50,7 +50,7 @@ public class MainActivity extends Activity {
         ScreenService.add(bottomLine2.getShape());
 
         for (int i = 0; i < 10; i++) {
-            PhysicsObject physicsObject = PhysicsObjectsFactory.createRectangle(1f, 1f, 1.f);
+            PhysicsObject physicsObject = PhysicsObjectsFactory.createRectangle(1f, 1f, 0.1f);
             physicsObject.getShape().move(0, i + 10);
             PhysicsService.add(physicsObject);
             ScreenService.add(physicsObject.getShape());

@@ -33,7 +33,9 @@ bool VertexBuff::init() {
 
     glGenBuffers(1, &vbo);
     bind();
-    glBufferData(GL_ARRAY_BUFFER, arrayWrapper.size() * sizeof(float), arrayWrapper.ptr(),
+    glBufferData(GL_ARRAY_BUFFER,
+                 arrayWrapper.size() * sizeof(float),
+                 arrayWrapper.ptr(),
                  GL_STATIC_DRAW);
     unbind();
     return true;

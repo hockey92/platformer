@@ -9,6 +9,7 @@
 #include <time.h>
 
 class TimeUtils {
+public:
     static double now();
 };
 

@@ -5,6 +5,8 @@
 #include <GLES2/gl2.h>
 #include "ScreenService.h"
 #include "Shaders.h"
+#include "TimeUtils.h"
+#include "common.h"
 
 ScreenService::ScreenService() { }
 
@@ -24,7 +26,9 @@ void ScreenService::draw() {
     while (it.hasNext()) {
         std::pair<const float, std::vector<BaseShape *> > *next = it.next();
         for (int i = 0; i < next->second.size(); i++) {
+            double time = TimeUtils::now();
             next->second[i]->draw(mvp);
+            LOGE("draw time %f", TimeUtils::now() - time);
         }
     }
 }

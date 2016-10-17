@@ -22,7 +22,7 @@ public:
 
     int getVerticesSize() const;
 
-    void draw(float *mvp) const;
+    void draw(float *mvp);
 
     virtual void innerRotate(float angle);
 
@@ -41,6 +41,8 @@ private:
     int verticesSize;
     VertexBuff *vertexBuff;
     unsigned short *indices;
+
+    bool isVertexBuffInited;
 
     void calculateLines();
 };

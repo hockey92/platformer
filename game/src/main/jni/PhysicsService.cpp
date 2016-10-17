@@ -1,6 +1,8 @@
 #include "PhysicsService.h"
 #include "CollisionFactory.h"
 #include "IdUtils.h"
+#include "TimeUtils.h"
+#include "common.h"
 
 PhysicsService::PhysicsService() : status(STOPPED) {
     for (int i = 0; i < 10000000; i++) {
@@ -9,6 +11,7 @@ PhysicsService::PhysicsService() : status(STOPPED) {
 }
 
 void PhysicsService::nextFrame() {
+    double time = TimeUtils::now();
     if (status != PROCESSING) {
         return;
     }
@@ -24,6 +27,7 @@ void PhysicsService::nextFrame() {
         po->applyForce();
     }
 
+    double collisionTime = TimeUtils::now();
     for (int i = 0; i < physicsObjects.size(); i++) {
         PhysicsObject *po1 = physicsObjects[i];
         if (!po1->isActive()) {
@@ -67,6 +71,7 @@ void PhysicsService::nextFrame() {
             }
         }
     }
+    LOGE("collision time ndk %f", TimeUtils::now() - collisionTime);
 
     for (int i = 0; i < collisionsToFix.size(); i++) {
         collisionsToFix[i]->applyWarmStarting();
@@ -85,6 +90,7 @@ void PhysicsService::nextFrame() {
         }
         po->updatePos();
     }
+    LOGE("time ndk %f", TimeUtils::now() - time);
 }
 
 int PhysicsService::getStatus() {
