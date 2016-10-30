@@ -24,12 +24,6 @@ public class GameEngine {
 
     public static native void init(AssetManager assetManager);
 
-    public static native void surfaceCreated();
-
-    public static native void surfaceChanged(int width, int height);
-
-    public static native void drawFrame();
-
     static {
         System.loadLibrary("accelerometergraph");
     }

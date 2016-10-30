@@ -9,6 +9,8 @@
 #include "ScreenService.h"
 #include "PolygonShape.h"
 #include "ObjectsPool.h"
+#include "Socket.h"
+#include "FileManager.h"
 
 #define  LOG_TAG    "accelerometergraph"
 #define  LOGI(...)  __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)
@@ -19,22 +21,31 @@ ScreenService screenService;
 extern "C" {
 JNIEXPORT void JNICALL
 Java_com_android_game_GameEngine_init(JNIEnv *env, jclass type, jobject assetManager) {
-//    AAssetManager *nativeAssetManager = AAssetManager_fromJava(env, assetManager);
-//    gameEngine.init(nativeAssetManager);
+    AAssetManager *nativeAssetManager = AAssetManager_fromJava(env, assetManager);
+    FileManager::getInstance()->init(nativeAssetManager);
+}
+
+JNIEXPORT jobject JNICALL
+Java_com_android_game_ScreenService_convertToGameCoordinates(JNIEnv *env, jclass type, jfloat x, jfloat y) {
+    Vec2 vel = screenService.convertToGameCoordinates(x, y);
+    jclass cls = env->FindClass("com/android/game/Vec2");
+    jmethodID methodID = env->GetMethodID(cls, "<init>", "(FF)V");
+    return env->NewObject(cls, methodID, vel.x(), vel.y());
 }
 
 JNIEXPORT void JNICALL
-Java_com_android_game_GameEngine_surfaceCreated(JNIEnv *env, jclass type) {
+Java_com_android_game_ScreenService_surfaceCreated(JNIEnv *env, jclass type) {
     screenService.surfaceCreated();
 }
 
 JNIEXPORT void JNICALL
-Java_com_android_game_GameEngine_surfaceChanged(JNIEnv *env, jclass type, jint width, jint height) {
+Java_com_android_game_ScreenService_surfaceChanged(JNIEnv *env, jclass type, jint width,
+                                                   jint height) {
     screenService.surfaceChanged(width, height);
 }
 
 JNIEXPORT void JNICALL
-Java_com_android_game_GameEngine_drawFrame(JNIEnv *env, jclass type) {
+Java_com_android_game_ScreenService_drawFrame(JNIEnv *env, jclass type) {
     screenService.draw();
 }
 
@@ -61,7 +72,7 @@ Java_com_android_game_PhysicsService_add(JNIEnv *env, jclass type, jint id) {
 
 JNIEXPORT void JNICALL
 Java_com_android_game_ScreenService_add(JNIEnv *env, jclass type, jint id) {
-    screenService.add((BaseShape *) ObjectsPool::getInstance()->getObject(id));
+    screenService.add((DrawableShape *) ObjectsPool::getInstance()->getObject(id));
 }
 
 }

@@ -4,6 +4,7 @@
 #include <cstddef>
 #include "Vec2.h"
 #include "AABB.h"
+#include "Texture.h"
 
 class BaseShape {
 public:
@@ -46,8 +47,6 @@ public:
     float getZ();
 
     void setZ(float z);
-
-    virtual void draw(float *mvp) { }
 
     void setAngle(float angle);
 

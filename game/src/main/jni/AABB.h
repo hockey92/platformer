@@ -23,9 +23,17 @@ public:
 
     bool isPointBelong(const Vec2 &point);
 
-    void getCoords(float& left, float& right, float& up, float& down) const;
+    void getCoords(float &left, float &right, float &up, float &down) const;
 
     Vec2 getCenter() const;
+
+    float getLeft();
+
+    float getRight();
+
+    float getUp();
+
+    float getDown();
 
 private:
     float left;

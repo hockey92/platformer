@@ -23,6 +23,18 @@ public class ShapeFactory {
         return new PolygonShape(vertices);
     }
 
+    public static PolygonShape createRectangle(float w, float h, String fileName) {
+        float halfW = w / 2.f;
+        float halfH = h / 2.f;
+        float[] vertices = {
+                halfW, halfH,
+                -halfW, halfH,
+                -halfW, -halfH,
+                halfW, -halfH
+        };
+        return new PolygonShape(vertices, fileName);
+    }
+
     public static Joint createJoint(float parentAngle, float parentR, float childAngle, float childR) {
         return new Joint(parentAngle, parentR, childAngle, childR);
     }
@@ -61,7 +73,7 @@ public class ShapeFactory {
     private static Shape parseRectangle(Map<String, Object> rectangleMap) {
         float w = Float.parseFloat((String) rectangleMap.get("w"));
         float h = Float.parseFloat((String) rectangleMap.get("h"));
-        return ShapeFactory.createRectangle(w, h);
+        return ShapeFactory.createRectangle(w, h, "circle.tga");
     }
 
     private static Joint parseJoint(Map<String, Object> jointMap) {

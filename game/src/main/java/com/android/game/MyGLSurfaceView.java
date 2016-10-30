@@ -16,6 +16,8 @@ public class MyGLSurfaceView extends GLSurfaceView {
     WindowManager windowManager;
     GameCharacter gameCharacter;
 
+    StickButton stickButton = new StickButton();
+
     int leftSidePointId = -1;
     int rightSidePointId = -1;
 
@@ -36,8 +38,8 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
         int currentIndex = e.getActionIndex();
 
-        System.out.println("currentIndex = " + currentIndex);
-        System.out.println("e.getAction() = " + e.getAction());
+//        System.out.println("currentIndex = " + currentIndex);
+//        System.out.println("e.getAction() = " + e.getAction());
 
         float x = e.getX(currentIndex);
         float y = e.getY(currentIndex);
@@ -45,6 +47,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
         switch (e.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_POINTER_DOWN:
+
                 if (x > width / 2) {
                     if (rightSidePointId < 0) {
 //                        World.getInstance().getMan().jump();
@@ -55,11 +58,18 @@ public class MyGLSurfaceView extends GLSurfaceView {
                     if (leftSidePointId < 0) {
                         leftSidePointId = currentIndex;
                         downXPos = x;
+
+                        stickButton.push(new Vec2(x, y));
+
                     }
                 }
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_POINTER_UP:
+
+                stickButton.release();
+                System.out.println("currentIndex = " + currentIndex);
+
                 if (leftSidePointId == currentIndex) {
                     moveType = MoveType.STOP;
                     gameCharacter.stop();
@@ -71,6 +81,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (leftSidePointId == currentIndex) {
+                    stickButton.move(new Vec2(x, y));
                     if (downXPos - x > 20) {
                         if (moveType == MoveType.RIGHT || moveType == MoveType.STOP) {
                             gameCharacter.stop();

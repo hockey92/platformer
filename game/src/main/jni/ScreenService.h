@@ -9,12 +9,13 @@
 #include "Map.h"
 #include "BaseShape.h"
 #include "Joint.h"
+#include "DrawableShape.h"
 
 class ScreenService {
 public:
     ScreenService();
 
-    void add(BaseShape *shape);
+    void add(DrawableShape *shape);
 
     void draw();
 
@@ -22,8 +23,10 @@ public:
 
     void surfaceCreated();
 
+    Vec2 convertToGameCoordinates(float x, float y);
+
 private:
-    Map<float, std::vector<BaseShape *> > shapesMap;
+    Map<float, std::vector<DrawableShape *> > shapesMap;
     float mvp[16];
 
     Vec2 physicalScreenSize;

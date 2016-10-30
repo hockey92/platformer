@@ -58,3 +58,19 @@ void AABB::getCoords(float &left, float &right, float &up, float &down) const {
 Vec2 AABB::getCenter() const {
     return Vec2(left + (right - left) / 2.0f, down + (up - down) / 2.0f);
 }
+
+float AABB::getLeft() {
+    return left;
+}
+
+float AABB::getRight() {
+    return right;
+}
+
+float AABB::getUp() {
+    return up;
+}
+
+float AABB::getDown() {
+    return down;
+}

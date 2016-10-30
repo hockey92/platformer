@@ -5,6 +5,18 @@ package com.android.game;
  */
 public class ScreenService {
 
+    public static native void surfaceCreated();
+
+    public static native void surfaceChanged(int width, int height);
+
+    public static native void drawFrame();
+
+    public static native Vec2 convertToGameCoordinates(float x, float y);
+
+    public static Vec2 convertToGameCoordinates(Vec2 vec) {
+        return convertToGameCoordinates(vec.x, vec.y);
+    }
+
     public static void add(Shape shape) {
         add(shape.getId());
     }

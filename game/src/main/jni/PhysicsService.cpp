@@ -71,7 +71,7 @@ void PhysicsService::nextFrame() {
             }
         }
     }
-    LOGE("collision time ndk %f", TimeUtils::now() - collisionTime);
+//    LOGE("collision time ndk %f", TimeUtils::now() - collisionTime);
 
     for (int i = 0; i < collisionsToFix.size(); i++) {
         collisionsToFix[i]->applyWarmStarting();
@@ -90,7 +90,7 @@ void PhysicsService::nextFrame() {
         }
         po->updatePos();
     }
-    LOGE("time ndk %f", TimeUtils::now() - time);
+//    LOGE("time ndk %f", TimeUtils::now() - time);
 }
 
 int PhysicsService::getStatus() {

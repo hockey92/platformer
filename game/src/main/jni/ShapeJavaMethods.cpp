@@ -8,6 +8,7 @@
 #include "ObjectsPool.h"
 #include "Joint.h"
 #include "PolygonShape.h"
+#include "FileManager.h"
 
 extern "C" {
 
@@ -51,6 +52,34 @@ Java_com_android_game_PolygonShape_createPolygon(JNIEnv *env, jclass type, jfloa
     return newObjectIndex;
 }
 
+JNIEXPORT jint JNICALL
+Java_com_android_game_PolygonShape_createPolygonWithTexture(JNIEnv *env, jclass type,
+                                                            jfloatArray arr, jstring fileName) {
+    jsize size = env->GetArrayLength(arr);
+    jfloat *verticesArray = env->GetFloatArrayElements(arr, 0);
+    Vec2 *vertices = new Vec2[size / 2];
+    for (int i = 0; i < size / 2; i++) {
+        vertices[i] = Vec2(verticesArray[i * 2], verticesArray[i * 2 + 1]);
+    }
+
+    const char *cFileName = env->GetStringUTFChars(fileName, 0);
+    int stringLen = env->GetStringLength(fileName);
+
+    char cFileNameCopy[stringLen];
+    for (int i = 0; i < stringLen; i++) {
+        cFileNameCopy[i] = cFileName[i];
+    }
+
+    File *file = FileManager::getInstance()->getFile(std::string(cFileName));
+
+    int newObjectIndex = ObjectsPool::getInstance()->addNewObject(
+            new PolygonShape(vertices, size / 2, new Texture(new TGAImage(file))));
+
+    env->ReleaseStringUTFChars(fileName, cFileName);
+    env->ReleaseFloatArrayElements(arr, verticesArray, 0);
+    return newObjectIndex;
+}
+
 JNIEXPORT void JNICALL
 Java_com_android_game_Shape_move(JNIEnv *env, jclass type, jint id, jfloat x, jfloat y) {
     ((BaseShape *) ObjectsPool::getInstance()->getObject(id))->move(Vec2(x, y));
@@ -67,6 +96,11 @@ Java_com_android_game_Shape_getCenter(JNIEnv *env, jclass type, jint id) {
     jclass cls = env->FindClass("com/android/game/Vec2");
     jmethodID methodID = env->GetMethodID(cls, "<init>", "(FF)V");
     return env->NewObject(cls, methodID, vel.x(), vel.y());
+}
+
+JNIEXPORT void JNICALL
+Java_com_android_game_Shape_setVisible(JNIEnv *env, jclass type, jint id, jboolean visible) {
+    ((DrawableShape *) ObjectsPool::getInstance()->getObject(id))->setVisible(visible);
 }
 
 }

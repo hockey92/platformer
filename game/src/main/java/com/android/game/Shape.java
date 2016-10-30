@@ -30,6 +30,11 @@ public class Shape {
         return this;
     }
 
+    public Shape setVisible(boolean visible) {
+        setVisible(id, visible);
+        return this;
+    }
+
     public Shape setCenter(Vec2 v) {
         setCenter(id, v.x, v.y);
         return this;
@@ -42,6 +47,10 @@ public class Shape {
     public void addChild(Shape shape) {
         addChild(id, shape.id);
         children.add(shape);
+    }
+
+    public boolean containsPoint(Vec2 point) {
+        return true;
     }
 
     public List<Shape> getChildren() {
@@ -71,6 +80,8 @@ public class Shape {
     private static native void move(int id, float x, float y);
 
     private static native void setCenter(int id, float x, float y);
+
+    private static native void setVisible(int id, boolean visible);
 
     private static native Object getCenter(int id);
 

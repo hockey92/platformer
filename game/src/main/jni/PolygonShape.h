@@ -9,20 +9,24 @@
 #include "BaseShape.h"
 #include "VertexBuff.h"
 #include "Line.h"
+#include "Texture.h"
+#include "DrawableShape.h"
 
-class PolygonShape : public BaseShape {
+class PolygonShape : public DrawableShape {
 public:
+    PolygonShape(Vec2 *vertices, int verticesSize, Texture *texture);
+
     PolygonShape(Vec2 *vertices, int verticesSize);
 
     virtual ~PolygonShape();
 
     Vec2 *getVertices() const;
 
-    Line* getLines() const;
+    Line *getLines() const;
 
     int getVerticesSize() const;
 
-    void draw(float *mvp);
+    virtual void draw(float *mvp);
 
     virtual void innerRotate(float angle);
 
@@ -34,6 +38,8 @@ public:
 
     virtual void calculateInnerAABB();
 
+    void setTexture(Texture *texture);
+
 private:
     Vec2 *initVertices;
     Vec2 *vertices;
@@ -42,7 +48,9 @@ private:
     VertexBuff *vertexBuff;
     unsigned short *indices;
 
-    bool isVertexBuffInited;
+    Texture *texture;
+
+    bool doesGlObjectsInitialized;
 
     void calculateLines();
 };

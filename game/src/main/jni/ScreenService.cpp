@@ -6,15 +6,13 @@
 #include "ScreenService.h"
 #include "Shaders.h"
 #include "TimeUtils.h"
-#include "common.h"
 
 ScreenService::ScreenService() { }
 
-
-void ScreenService::add(BaseShape *shape) {
-    std::vector<BaseShape *> *shapes = shapesMap.get(shape->getZ());
+void ScreenService::add(DrawableShape *shape) {
+    std::vector<DrawableShape *> *shapes = shapesMap.get(shape->getZ());
     if (shapes == NULL) {
-        shapes = shapesMap.put(shape->getZ(), std::vector<BaseShape *>());
+        shapes = shapesMap.put(shape->getZ(), std::vector<DrawableShape *>());
     }
     shapes->push_back(shape);
 }
@@ -22,13 +20,15 @@ void ScreenService::add(BaseShape *shape) {
 void ScreenService::draw() {
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
-    Iterator<float, std::vector<BaseShape *> > it = shapesMap.getIterator();
+    Iterator<float, std::vector<DrawableShape *> > it = shapesMap.getIterator();
     while (it.hasNext()) {
-        std::pair<const float, std::vector<BaseShape *> > *next = it.next();
+        std::pair<const float, std::vector<DrawableShape *> > *next = it.next();
         for (int i = 0; i < next->second.size(); i++) {
             double time = TimeUtils::now();
-            next->second[i]->draw(mvp);
-            LOGE("draw time %f", TimeUtils::now() - time);
+            if (next->second[i]->isVisible()) {
+                next->second[i]->draw(mvp);
+            }
+//            LOGE("draw time %f", TimeUtils::now() - time);
         }
     }
 }
@@ -57,4 +57,11 @@ void ScreenService::surfaceChanged(float w, float h) {
     mvp[5] = rel;
     mvp[10] = 1.0f;
     mvp[15] = 10.0f;
+}
+
+Vec2 ScreenService::convertToGameCoordinates(float x, float y) {
+    return Vec2(
+            -1.f * mvp[15] + x / physicalScreenSize.x() * 2.f * mvp[15],
+            1.f * mvp[15] / mvp[5] - y / physicalScreenSize.y() * 2.f * mvp[15] / mvp[5]
+    );
 }

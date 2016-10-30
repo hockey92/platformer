@@ -34,6 +34,9 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle icicle) {
+        super.onCreate(icicle);
+
+        GameEngine.init(getAssets());
 
         String json = loadJSONFromAsset("man.json");
         String runAnimationJson = loadJSONFromAsset("runAnimation.json");
@@ -58,23 +61,22 @@ public class MainActivity extends Activity {
 
         gameCharacter = new GameCharacter(json, runAnimationJson);
 
-        super.onCreate(icicle);
         glSurfaceView = new MyGLSurfaceView(getApplication(), getWindowManager(), gameCharacter);
         glSurfaceView.setEGLContextClientVersion(2);
         glSurfaceView.setRenderer(new GLSurfaceView.Renderer() {
             @Override
             public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-                GameEngine.surfaceCreated();
+                ScreenService.surfaceCreated();
             }
 
             @Override
             public void onSurfaceChanged(GL10 gl, int width, int height) {
-                GameEngine.surfaceChanged(width, height);
+                ScreenService.surfaceChanged(width, height);
             }
 
             @Override
             public void onDrawFrame(GL10 gl) {
-                GameEngine.drawFrame();
+                ScreenService.drawFrame();
             }
         });
         glSurfaceView.queueEvent(new Runnable() {
@@ -98,7 +100,7 @@ public class MainActivity extends Activity {
 
                                 long timeToWait = 1000 / 60 - (System.currentTimeMillis() - time);
 
-                                System.out.println("time to wait " + timeToWait);
+//                                System.out.println("time to wait " + timeToWait);
 
                                 Thread.sleep(timeToWait <= 0 ? 2 : timeToWait);
                             } catch (InterruptedException e) {
@@ -109,8 +111,6 @@ public class MainActivity extends Activity {
                 });
                 physicsThread.setDaemon(true);
                 physicsThread.start();
-
-                GameEngine.init(getAssets());
             }
         });
         setContentView(glSurfaceView);
