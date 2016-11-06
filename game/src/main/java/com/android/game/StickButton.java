@@ -3,9 +3,8 @@ package com.android.game;
 /**
  * Created by qwerty on 30.10.16.
  */
-public class StickButton {
+public class StickButton extends Button {
 
-    private Vec2 pushPosition = null;
     private Shape circle = ShapeFactory.createRectangle(2, 2, "circle1.tga").setVisible(false);
     private Shape point = ShapeFactory.createRectangle(0.5f, 0.5f, "circle.tga").setVisible(false);
 
@@ -14,24 +13,39 @@ public class StickButton {
         ScreenService.add(point);
     }
 
-    public void push(Vec2 position) {
-        position = ScreenService.convertToGameCoordinates(position);
-        if (circle.containsPoint(position)) {
-            this.pushPosition = position;
-            circle.setCenter(position);
-            circle.setVisible(true);
-            point.setCenter(position);
-            point.setVisible(true);
+    @Override
+    public void push(Vec2 pushPos, int id) {
+
+        if (this.pos != null || pushPos.x > ScreenService.getRealSize().x / 2.0f) {
+            return;
+        }
+
+        this.id = id;
+
+        pushPos = ScreenService.convertToGameCoordinates(pushPos);
+        if (circle.containsPoint(pushPos)) {
+            this.pos = pushPos;
+            renderButton();
         }
     }
 
-    public void move(Vec2 position) {
-        if (pushPosition == null) return;
+    @Override
+    public void release(Vec2 releasePos, int id) {
+        if (this.id != id) return;
 
-        position = ScreenService.convertToGameCoordinates(position);
+        this.pos = null;
+        circle.setVisible(false);
+        point.setVisible(false);
+    }
 
-        float dx = position.x - pushPosition.x;
-        float dy = position.y - pushPosition.y;
+    @Override
+    public void move(Vec2 movePos, int id) {
+        if (this.pos == null || this.id != id) return;
+
+        movePos = ScreenService.convertToGameCoordinates(movePos);
+
+        float dx = movePos.x - this.pos.x;
+        float dy = movePos.y - this.pos.y;
 
         float dist = (float) Math.sqrt(dx * dx + dy * dy);
         if (dist > 1.f) {
@@ -41,14 +55,15 @@ public class StickButton {
         }
 
         point.setCenter(new Vec2(
-                pushPosition.x + dx,
-                pushPosition.y + dy
+                this.pos.x + dx,
+                this.pos.y + dy
         ));
     }
 
-    public void release() {
-        this.pushPosition = null;
-        circle.setVisible(false);
-        point.setVisible(false);
+    private void renderButton() {
+        circle.setCenter(pos);
+        circle.setVisible(true);
+        point.setCenter(pos);
+        point.setVisible(true);
     }
 }

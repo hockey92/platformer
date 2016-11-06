@@ -103,4 +103,9 @@ Java_com_android_game_Shape_setVisible(JNIEnv *env, jclass type, jint id, jboole
     ((DrawableShape *) ObjectsPool::getInstance()->getObject(id))->setVisible(visible);
 }
 
+JNIEXPORT jboolean JNICALL
+Java_com_android_game_Shape_containsPoint(JNIEnv *env, jclass type, jint id, jfloat x, jfloat y) {
+    return (unsigned char) ((BaseShape *) ObjectsPool::getInstance()->getObject(id))->containsPoint(Vec2(x, y));
+}
+
 }

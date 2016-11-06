@@ -172,3 +172,7 @@ void PolygonShape::calculateInnerAABB() {
 void PolygonShape::setTexture(Texture *texture) {
 
 }
+
+bool PolygonShape::containsPoint(const Vec2 &point) {
+
+}

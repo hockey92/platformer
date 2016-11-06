@@ -34,6 +34,8 @@ public:
 
     virtual void move(const Vec2 &coords);
 
+    virtual bool containsPoint(const Vec2 &point);
+
     Vec2 getVertex(int i) const;
 
     virtual void calculateInnerAABB();

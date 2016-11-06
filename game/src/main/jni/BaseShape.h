@@ -44,6 +44,8 @@ public:
 
     virtual int verticesSize() { return -1; }
 
+    virtual bool containsPoint(const Vec2 &point) { return false; }
+
     float getZ();
 
     void setZ(float z);

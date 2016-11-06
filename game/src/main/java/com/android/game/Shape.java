@@ -49,10 +49,6 @@ public class Shape {
         children.add(shape);
     }
 
-    public boolean containsPoint(Vec2 point) {
-        return true;
-    }
-
     public List<Shape> getChildren() {
         return children;
     }
@@ -73,6 +69,10 @@ public class Shape {
         return name;
     }
 
+    public boolean containsPoint(Vec2 point) {
+        return containsPoint(id, point.x, point.y);
+    }
+
     static {
         System.loadLibrary("accelerometergraph");
     }
@@ -90,4 +90,6 @@ public class Shape {
     private static native void update(int id);
 
     private static native void setAngle(int id, float angle);
+
+    private static native boolean containsPoint(int id, float x, float y);
 }

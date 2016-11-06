@@ -29,8 +29,6 @@ public:
 
     void addPhysicsObject(PhysicsObject *physicsObject);
 
-    void draw(float* mvp);
-
 private:
     int status;
     CollisionInfo *collisionInfos[10000000];

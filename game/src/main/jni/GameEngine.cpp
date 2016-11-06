@@ -25,13 +25,13 @@ Java_com_android_game_GameEngine_init(JNIEnv *env, jclass type, jobject assetMan
     FileManager::getInstance()->init(nativeAssetManager);
 }
 
-JNIEXPORT jobject JNICALL
-Java_com_android_game_ScreenService_convertToGameCoordinates(JNIEnv *env, jclass type, jfloat x, jfloat y) {
-    Vec2 vel = screenService.convertToGameCoordinates(x, y);
-    jclass cls = env->FindClass("com/android/game/Vec2");
-    jmethodID methodID = env->GetMethodID(cls, "<init>", "(FF)V");
-    return env->NewObject(cls, methodID, vel.x(), vel.y());
-}
+//JNIEXPORT jobject JNICALL
+//Java_com_android_game_ScreenService_convertToGameCoordinates(JNIEnv *env, jclass type, jfloat x, jfloat y) {
+//    Vec2 vel = screenService.convertToGameCoordinates(x, y);
+//    jclass cls = env->FindClass("com/android/game/Vec2");
+//    jmethodID methodID = env->GetMethodID(cls, "<init>", "(FF)V");
+//    return env->NewObject(cls, methodID, vel.x(), vel.y());
+//}
 
 JNIEXPORT void JNICALL
 Java_com_android_game_ScreenService_surfaceCreated(JNIEnv *env, jclass type) {
@@ -39,8 +39,8 @@ Java_com_android_game_ScreenService_surfaceCreated(JNIEnv *env, jclass type) {
 }
 
 JNIEXPORT void JNICALL
-Java_com_android_game_ScreenService_surfaceChanged(JNIEnv *env, jclass type, jint width,
-                                                   jint height) {
+Java_com_android_game_ScreenService_surfaceChangedNative(JNIEnv *env, jclass type, jint width,
+                                                         jint height) {
     screenService.surfaceChanged(width, height);
 }
 

@@ -2,7 +2,6 @@ package com.android.game;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
-import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.WindowManager;
 
@@ -16,6 +15,8 @@ public class MyGLSurfaceView extends GLSurfaceView {
     WindowManager windowManager;
     GameCharacter gameCharacter;
 
+    ButtonProxy buttons = new ButtonProxy();
+
     StickButton stickButton = new StickButton();
 
     int leftSidePointId = -1;
@@ -25,85 +26,33 @@ public class MyGLSurfaceView extends GLSurfaceView {
         super(context);
         this.windowManager = windowManager;
         this.gameCharacter = gameCharacter;
+
+        this.buttons.addButton(new StickButton());
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent e) {
 
-        DisplayMetrics metrics = new DisplayMetrics();
-        windowManager.getDefaultDisplay().getMetrics(metrics);
-
-        int height = metrics.heightPixels;
-        int width = metrics.widthPixels;
-
-        int currentIndex = e.getActionIndex();
+        int pointerIndex = e.getActionIndex();
+        int id = e.getPointerId(pointerIndex);
 
 //        System.out.println("currentIndex = " + currentIndex);
 //        System.out.println("e.getAction() = " + e.getAction());
 
-        float x = e.getX(currentIndex);
-        float y = e.getY(currentIndex);
+        float x = e.getX(pointerIndex);
+        float y = e.getY(pointerIndex);
 
         switch (e.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_POINTER_DOWN:
-
-                if (x > width / 2) {
-                    if (rightSidePointId < 0) {
-//                        World.getInstance().getMan().jump();
-                        gameCharacter.jump();
-                        rightSidePointId = currentIndex;
-                    }
-                } else {
-                    if (leftSidePointId < 0) {
-                        leftSidePointId = currentIndex;
-                        downXPos = x;
-
-                        stickButton.push(new Vec2(x, y));
-
-                    }
-                }
+                stickButton.push(new Vec2(x, y), id);
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_POINTER_UP:
-
-                stickButton.release();
-                System.out.println("currentIndex = " + currentIndex);
-
-                if (leftSidePointId == currentIndex) {
-                    moveType = MoveType.STOP;
-                    gameCharacter.stop();
-//                    World.getInstance().getMan().stop();
-                    leftSidePointId = -1;
-                } else if (rightSidePointId == currentIndex) {
-                    rightSidePointId = -1;
-                }
+                stickButton.release(new Vec2(x, y), id);
                 break;
             case MotionEvent.ACTION_MOVE:
-                if (leftSidePointId == currentIndex) {
-                    stickButton.move(new Vec2(x, y));
-                    if (downXPos - x > 20) {
-                        if (moveType == MoveType.RIGHT || moveType == MoveType.STOP) {
-                            gameCharacter.stop();
-                            gameCharacter.left();
-//                            World.getInstance().getMan().stop();
-//                            World.getInstance().getMan().runLeft();
-                        }
-                        moveType = MoveType.LEFT;
-                    } else if (downXPos - x < 20) {
-                        if (moveType == MoveType.LEFT || moveType == MoveType.STOP) {
-                            gameCharacter.stop();
-                            gameCharacter.right();
-//                            World.getInstance().getMan().stop();
-//                            World.getInstance().getMan().runRight();
-                        }
-                        moveType = MoveType.RIGHT;
-                    } else {
-                        moveType = MoveType.STOP;
-                        gameCharacter.stop();
-//                        World.getInstance().getMan().stop();
-                    }
-                }
+                stickButton.move(new Vec2(x, y), id);
                 break;
         }
         return true;
