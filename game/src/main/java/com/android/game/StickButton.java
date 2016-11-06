@@ -15,24 +15,17 @@ public class StickButton extends Button {
 
     @Override
     public void push(Vec2 pushPos, int id) {
-
         if (this.pos != null || pushPos.x > ScreenService.getRealSize().x / 2.0f) {
             return;
         }
-
         this.id = id;
-
-        pushPos = ScreenService.convertToGameCoordinates(pushPos);
-        if (circle.containsPoint(pushPos)) {
-            this.pos = pushPos;
-            renderButton();
-        }
+        this.pos = ScreenService.convertToGameCoordinates(pushPos);
+        renderButton();
     }
 
     @Override
     public void release(Vec2 releasePos, int id) {
         if (this.id != id) return;
-
         this.pos = null;
         circle.setVisible(false);
         point.setVisible(false);
