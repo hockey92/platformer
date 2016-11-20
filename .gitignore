@@ -8,3 +8,4 @@ platformer.iml
 gradlew
 gradlew.bat
 local.properties
+*.jar
