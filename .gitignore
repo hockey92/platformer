@@ -1,6 +1,6 @@
 # Created by .ignore support plugin (hsz.mobi)
 build/*
-game/build*
 .gradle/*
 .idea/*
 game/game.iml
+game/build/*
