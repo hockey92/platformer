@@ -3,5 +3,4 @@ technologies: [Android, NDK]
 categories:   [NDK]
 languages:    [C++, Java]
 solutions:    [Mobile]
-github:       googlesamples/android-ndk
-license:      apache2
+github:       hockey92/platformer

@@ -4,3 +4,7 @@ build/*
 .idea/*
 game/game.iml
 game/build/*
+platformer.iml
+gradlew.bat
+gradlew
+local.properties
