@@ -5,6 +5,6 @@ build/*
 game/game.iml
 game/build/*
 platformer.iml
-gradlew.bat
 gradlew
+gradlew.bat
 local.properties
