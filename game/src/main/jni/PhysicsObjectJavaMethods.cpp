@@ -50,12 +50,6 @@ Java_com_android_game_PhysicsObject_getCenter(JNIEnv *env, jclass type, jint id)
 }
 
 JNIEXPORT jint JNICALL
-Java_com_android_game_RectanglePO_createCube(JNIEnv *env, jclass type,
-                                             jfloat w, jfloat h, jfloat invM) {
-    return ObjectsPool::getInstance()->addNewObject(new RectanglePhysicsObject(w, h, invM));
-}
-
-JNIEXPORT jint JNICALL
 Java_com_android_game_PhysicsObject_createPhysicsObject(JNIEnv *env, jclass type,
                                                       jint shapeId, jfloat invM, jfloat invI) {
     BaseShape *shape = (BaseShape *) ObjectsPool::getInstance()->getObject(shapeId);

@@ -5,12 +5,12 @@
 #include "RectanglePhysicsObject.h"
 #include "PolygonShape.h"
 
-RectanglePhysicsObject::RectanglePhysicsObject(float w, float h, float invM) {
+RectanglePhysicsObject::RectanglePhysicsObject(float w, float h, float d, float invM) {
     Vec2 vertices2[] = {Vec2(w / 2, h / 2),
                         Vec2(-w / 2, h / 2),
                         Vec2(-w / 2, -h / 2),
                         Vec2(w / 2, -h / 2)};
-    setShape(new PolygonShape(vertices2, 4));
+    setShape(new PolygonShape(vertices2, 4, d));
     setInvM(invM);
     setInvI(invM > 0 ? 12.0f * invM / (w * w + h * h) : 0);
 }

@@ -44,16 +44,16 @@ public class MainActivity extends Activity {
 //        shape.move(40, 0);
 //        shape.update();
 
-        PhysicsObject bottomLine = new PhysicsObject(ShapeFactory.createRectangle(100, 1).move(0, -5), 0, 0);
+        PhysicsObject bottomLine = new PhysicsObject(ShapeFactory.createRectangle(100, 1, 1).move(0, -5), 0, 0);
         PhysicsService.add(bottomLine);
         ScreenService.add(bottomLine.getShape());
 
-        PhysicsObject bottomLine2 = new PhysicsObject(ShapeFactory.createRectangle(1, 100).move(-7, 0), 0, 0);
-        PhysicsService.add(bottomLine2);
-        ScreenService.add(bottomLine2.getShape());
+//        PhysicsObject bottomLine2 = new PhysicsObject(ShapeFactory.createRectangle(1, 100, 10).move(-7, 0), 0, 0);
+//        PhysicsService.add(bottomLine2);
+//        ScreenService.add(bottomLine2.getShape());
 
         for (int i = 0; i < 10; i++) {
-            PhysicsObject physicsObject = PhysicsObjectsFactory.createRectangle(1f, 1f, 0.1f);
+            PhysicsObject physicsObject = PhysicsObjectsFactory.createRectangle(1.f, 1.f, 1.f, 0.1f);
             physicsObject.getShape().move(1, -2 + i);
             PhysicsService.add(physicsObject);
             ScreenService.add(physicsObject.getShape());

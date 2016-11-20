@@ -17,7 +17,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
     ButtonProxy buttons = new ButtonProxy();
 
-    StickButton stickButton = new StickButton();
+    StickButton stickButton;
 
     int leftSidePointId = -1;
     int rightSidePointId = -1;
@@ -27,7 +27,9 @@ public class MyGLSurfaceView extends GLSurfaceView {
         this.windowManager = windowManager;
         this.gameCharacter = gameCharacter;
 
-        this.buttons.addButton(new StickButton());
+//        this.buttons.addButton(new StickButton());
+
+        stickButton = new StickButton(gameCharacter);
     }
 
     @Override

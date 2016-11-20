@@ -15,13 +15,14 @@ public class GameCharacter {
         animation = new Animation(animatedShape, animationJson);
 
         rectangle = new PhysicsObject(
-                ShapeFactory.createRectangle(0.6f, 1.8f), 1, 0);
+                ShapeFactory.createRectangle(0.6f, 1.8f, 0.2f), 0.1f, 0);
 
         PhysicsService.add(rectangle);
     }
 
     public void update() {
         animatedShape.setCenter(rectangle.getShape().getCenter());
+        ScreenService.move(-rectangle.getShape().getCenter().x, -rectangle.getShape().getCenter().y);
         animatedShape.move(0, 0.35f);
         animation.nextFrame();
         animatedShape.update();

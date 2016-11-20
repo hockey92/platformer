@@ -8,9 +8,13 @@ public class StickButton extends Button {
     private Shape circle = ShapeFactory.createRectangle(2, 2, "circle1.tga").setVisible(false);
     private Shape point = ShapeFactory.createRectangle(0.5f, 0.5f, "circle.tga").setVisible(false);
 
-    public StickButton() {
+    GameCharacter gameCharacter;
+
+    public StickButton(GameCharacter gameCharacter) {
         ScreenService.add(circle);
         ScreenService.add(point);
+
+        this.gameCharacter = gameCharacter;
     }
 
     @Override
@@ -29,6 +33,8 @@ public class StickButton extends Button {
         this.pos = null;
         circle.setVisible(false);
         point.setVisible(false);
+
+        gameCharacter.stop();
     }
 
     @Override
@@ -51,6 +57,14 @@ public class StickButton extends Button {
                 this.pos.x + dx,
                 this.pos.y + dy
         ));
+
+        if (dx > 0.1f) {
+            gameCharacter.right();
+        } else if (dx < 0.1f) {
+            gameCharacter.left();
+        } else {
+            gameCharacter.stop();
+        }
     }
 
     private void renderButton() {

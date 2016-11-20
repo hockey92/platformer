@@ -25,11 +25,16 @@ public:
 
     Vec2 convertToGameCoordinates(float x, float y);
 
+    void move(float x, float y);
+
 private:
     Map<float, std::vector<DrawableShape *> > shapesMap;
     float mvp[16];
 
     Vec2 physicalScreenSize;
+    float x, y;
+
+    void calculateMVP();
 };
 
 #endif //PLATFORMER_SCREENSERVICE_H

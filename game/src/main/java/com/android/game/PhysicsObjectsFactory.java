@@ -5,9 +5,9 @@ package com.android.game;
  */
 public class PhysicsObjectsFactory {
 
-    public static PhysicsObject createRectangle(float w, float h, float invM) {
+    public static PhysicsObject createRectangle(float w, float h, float d, float invM) {
         return new PhysicsObject(
-                ShapeFactory.createRectangle(w, h), invM, 12.0f * invM / (w * w + h * h));
+                ShapeFactory.createRectangle(w, h, d), invM, 12.0f * invM / (w * w + h * h));
     }
 
 }

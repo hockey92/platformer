@@ -10,7 +10,7 @@
 
 class RectanglePhysicsObject : public PhysicsObject {
 public:
-    RectanglePhysicsObject(float w, float h, float invM);
+    RectanglePhysicsObject(float w, float h, float d, float invM);
 };
 
 

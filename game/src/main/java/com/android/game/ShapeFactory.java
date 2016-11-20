@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public class ShapeFactory {
 
-    public static PolygonShape createRectangle(float w, float h) {
+    public static PolygonShape createRectangle(float w, float h, float d) {
         float halfW = w / 2.f;
         float halfH = h / 2.f;
         float[] vertices = {
@@ -20,7 +20,7 @@ public class ShapeFactory {
                 -halfW, -halfH,
                 halfW, -halfH
         };
-        return new PolygonShape(vertices);
+        return new PolygonShape(vertices, d);
     }
 
     public static PolygonShape createRectangle(float w, float h, String fileName) {
@@ -71,9 +71,24 @@ public class ShapeFactory {
     }
 
     private static Shape parseRectangle(Map<String, Object> rectangleMap) {
-        float w = Float.parseFloat((String) rectangleMap.get("w"));
-        float h = Float.parseFloat((String) rectangleMap.get("h"));
-        return ShapeFactory.createRectangle(w, h, "circle.tga");
+        float w = parseFloat(rectangleMap, "w", 0.f);
+        float h = parseFloat(rectangleMap, "h", 0.f);
+        float d = parseFloat(rectangleMap, "d", 0.f);
+        Shape shape = ShapeFactory.createRectangle(w, h, d);
+
+        float z = parseFloat(rectangleMap, "z", 0.f);
+        shape.setZ(z);
+        return shape;
+    }
+
+    private static float parseFloat(Map<String, Object> rectangleMap, String name, float defaultValue) {
+        String value = (String) rectangleMap.get(name);
+        return value == null ? defaultValue : Float.parseFloat(value);
+    }
+
+    private static Float parseFloat(Map<String, Object> rectangleMap, String name) {
+        String value = (String) rectangleMap.get(name);
+        return value == null ? null : Float.parseFloat(value);
     }
 
     private static Joint parseJoint(Map<String, Object> jointMap) {

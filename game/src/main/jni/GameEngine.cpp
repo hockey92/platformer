@@ -45,6 +45,12 @@ Java_com_android_game_ScreenService_surfaceChangedNative(JNIEnv *env, jclass typ
 }
 
 JNIEXPORT void JNICALL
+Java_com_android_game_ScreenService_move(JNIEnv *env, jclass type, jfloat x,
+                                         jfloat y) {
+    screenService.move(x, y);
+}
+
+JNIEXPORT void JNICALL
 Java_com_android_game_ScreenService_drawFrame(JNIEnv *env, jclass type) {
     screenService.draw();
 }

@@ -73,6 +73,10 @@ public class Shape {
         return containsPoint(id, point.x, point.y);
     }
 
+    public void setZ(float z) {
+        setZ(id, z);
+    }
+
     static {
         System.loadLibrary("accelerometergraph");
     }
@@ -90,6 +94,8 @@ public class Shape {
     private static native void update(int id);
 
     private static native void setAngle(int id, float angle);
+
+    private static native void setZ(int id, float z);
 
     private static native boolean containsPoint(int id, float x, float y);
 }

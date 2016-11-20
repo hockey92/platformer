@@ -39,7 +39,7 @@ Java_com_android_game_Joint_createJoint(JNIEnv *env, jclass type,
 }
 
 JNIEXPORT jint JNICALL
-Java_com_android_game_PolygonShape_createPolygon(JNIEnv *env, jclass type, jfloatArray arr) {
+Java_com_android_game_PolygonShape_createPolygon(JNIEnv *env, jclass type, jfloatArray arr, jfloat d) {
     jsize size = env->GetArrayLength(arr);
     jfloat *verticesArray = env->GetFloatArrayElements(arr, 0);
     Vec2 *vertices = new Vec2[size / 2];
@@ -47,7 +47,7 @@ Java_com_android_game_PolygonShape_createPolygon(JNIEnv *env, jclass type, jfloa
         vertices[i] = Vec2(verticesArray[i * 2], verticesArray[i * 2 + 1]);
     }
     int newObjectIndex = ObjectsPool::getInstance()
-            ->addNewObject(new PolygonShape(vertices, size / 2));
+            ->addNewObject(new PolygonShape(vertices, d, size / 2));
     env->ReleaseFloatArrayElements(arr, verticesArray, 0);
     return newObjectIndex;
 }
@@ -88,6 +88,11 @@ Java_com_android_game_Shape_move(JNIEnv *env, jclass type, jint id, jfloat x, jf
 JNIEXPORT void JNICALL
 Java_com_android_game_Shape_setCenter(JNIEnv *env, jclass type, jint id, jfloat x, jfloat y) {
     ((BaseShape *) ObjectsPool::getInstance()->getObject(id))->setCenter(Vec2(x, y));
+}
+
+JNIEXPORT void JNICALL
+Java_com_android_game_Shape_setZ(JNIEnv *env, jclass type, jint id, jfloat z) {
+    ((BaseShape *) ObjectsPool::getInstance()->getObject(id))->setZ(z);
 }
 
 JNIEXPORT jobject JNICALL

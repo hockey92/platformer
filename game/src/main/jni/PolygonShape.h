@@ -11,12 +11,13 @@
 #include "Line.h"
 #include "Texture.h"
 #include "DrawableShape.h"
+#include "Cube.h"
 
 class PolygonShape : public DrawableShape {
 public:
     PolygonShape(Vec2 *vertices, int verticesSize, Texture *texture);
 
-    PolygonShape(Vec2 *vertices, int verticesSize);
+    PolygonShape(Vec2 *vertices, float d, int verticesSize);
 
     virtual ~PolygonShape();
 
@@ -55,6 +56,8 @@ private:
     bool doesGlObjectsInitialized;
 
     void calculateLines();
+
+    Cube* cube;
 };
 
 #endif //PLATFORMER_POLYGON_H

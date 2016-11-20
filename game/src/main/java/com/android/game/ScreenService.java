@@ -39,6 +39,8 @@ public class ScreenService {
         add(shape.getId());
     }
 
+    public static native void move(float x, float y);
+
     static {
         System.loadLibrary("accelerometergraph");
     }
